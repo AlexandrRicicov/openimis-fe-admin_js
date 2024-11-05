@@ -306,6 +306,7 @@ function WorkerSearcher({
         enableActionButtons={enableActionButtons}
         searcherActions={searcherActions}
         downloadWithIconButton
+        displayClearAllColsButton={false}
       />
       {failedExport && (
         <Dialog open={failedExport} fullWidth maxWidth="sm">

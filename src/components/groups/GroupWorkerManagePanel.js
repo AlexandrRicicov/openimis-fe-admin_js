@@ -158,20 +158,22 @@ function GroupWorkerManagePanel({ edited, onChange, disabled }) {
         <Grid className={classes.item}>
           <Paper>
             <Grid item className={classes.item}>
-              <TextField
-                className={classes.filter}
-                variant="outlined"
-                label={formatMessage('GroupWorkerManagePanel.workerFilter')}
-                disabled={disabled}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={debouncedOnSearch}
-              />
+              <Tooltip title={formatMessage('GroupWorkerManagePanel.inputTooltip')}>
+                <TextField
+                  className={classes.filter}
+                  variant="outlined"
+                  label={formatMessage('GroupWorkerManagePanel.workerFilter')}
+                  disabled={disabled}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={debouncedOnSearch}
+                />
+              </Tooltip>
             </Grid>
           </Paper>
         </Grid>

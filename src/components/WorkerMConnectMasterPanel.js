@@ -4,7 +4,7 @@ import {
   Divider, Grid, Paper, Typography, Button,
 } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import SaveIcon from '@material-ui/icons/Save';
 
 import { FormPanel, FormattedMessage, withModulesManager } from '@openimis/fe-core';
 import WorkerMConnectAddForm from './WorkerMConnectAddForm';
@@ -43,7 +43,7 @@ class WorkerMConnectMasterPanel extends FormPanel {
                 <Button
                   onClick={() => save(edited)}
                   disabled={!canSave() || readOnly}
-                  startIcon={<SaveAltIcon />}
+                  startIcon={<SaveIcon />}
                   variant="contained"
                   color="primary"
                 >

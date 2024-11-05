@@ -78,16 +78,24 @@ const DEFAULT_CONFIG = {
   ],
   'worker.MainMenu': [
     {
+      text: <FormattedMessage module="workerVoucher" id="menu.workersList" />,
+      icon: <People />,
+      route: `/${ROUTE_WORKER_VOUCHER_WORKER_LIST}`,
+      filter: (rights) => [RIGHT_WORKER_SEARCH].some((right) => rights.includes(right)),
+    },
+    {
       text: <FormattedMessage module="workerVoucher" id="menu.groupList" />,
       icon: <TransferWithinAStationIcon />,
       route: `/${ROUTE_GROUP_LIST}`,
       filter: (rights) => [RIGHT_GROUP_SEARCH].some((right) => rights.includes(right)),
     },
     {
-      text: <FormattedMessage module="workerVoucher" id="menu.workersList" />,
-      icon: <People />,
-      route: `/${ROUTE_WORKER_VOUCHER_WORKER_LIST}`,
-      filter: (rights) => [RIGHT_WORKER_SEARCH].some((right) => rights.includes(right)),
+      text: <FormattedMessage module="workerVoucher" id="menu.voucherAssignment" />,
+      icon: <GroupAddIcon />,
+      route: `/${ROUTE_WORKER_VOUCHER_ASSIGNMENT}`,
+      filter: (rights, config) => config.genericVoucherEnabled
+      && [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right))
+      && ![INSPECTOR_RIGHT, ADMIN_RIGHT].some((right) => rights.includes(right)),
     },
     {
       text: <FormattedMessage module="workerVoucher" id="menu.voucherList" />,
@@ -101,14 +109,6 @@ const DEFAULT_CONFIG = {
       route: `/${ROUTE_WORKER_VOUCHER_ACQUIREMENT}`,
       filter: (rights) => [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right))
         && ![INSPECTOR_RIGHT, ADMIN_RIGHT].some((right) => rights.includes(right)),
-    },
-    {
-      text: <FormattedMessage module="workerVoucher" id="menu.voucherAssignment" />,
-      icon: <GroupAddIcon />,
-      route: `/${ROUTE_WORKER_VOUCHER_ASSIGNMENT}`,
-      filter: (rights, config) => config.genericVoucherEnabled
-      && [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right))
-      && ![INSPECTOR_RIGHT, ADMIN_RIGHT].some((right) => rights.includes(right)),
     },
   ],
   'admin.voucher.MainMenu': [
