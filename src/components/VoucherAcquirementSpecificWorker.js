@@ -15,6 +15,7 @@ import {
   useHistory,
   useModulesManager,
   useTranslations,
+  InfoButton,
 } from '@openimis/fe-core';
 import { acquireSpecificVoucher, fetchMutation, specificVoucherValidation } from '../actions';
 import { MODULE_NAME, REF_ROUTE_BILL, USER_ECONOMIC_UNIT_STORAGE_KEY } from '../constants';
@@ -37,6 +38,12 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     marginBottom: theme.spacing(0.5),
     backgroundColor: theme.palette.background.paper,
+  },
+  infoSection: {
+    display: 'flex',
+    justifyContent: 'start',
+    alignItems: 'center',
+    gap: theme.spacing(1),
   },
 }));
 
@@ -110,7 +117,7 @@ function VoucherAcquirementSpecificWorker() {
       historyPush(modulesManager, history, REF_ROUTE_BILL, [billId]);
       dispatch(
         coreAlert(
-          formatMessage('menu.voucherAcquirementSuccess'),
+          formatMessage('menu.voucherAcquirement'),
           formatMessage('workerVoucher.VoucherAcquirementForm.specificVoucherConfirmation'),
         ),
       );
@@ -152,7 +159,10 @@ function VoucherAcquirementSpecificWorker() {
     <>
       <Grid xs={12}>
         <Grid container className={classes.paperHeaderTitle}>
-          <Typography variant="h5">{formatMessage('workerVoucher.acquirement.method.SPECIFIC_WORKER')}</Typography>
+          <div className={classes.infoSection}>
+            <InfoButton content={formatMessage('VoucherAcquirementSpecificWorker.form.moreInfo')} />
+            <Typography variant="h5">{formatMessage('workerVoucher.acquirement.method.SPECIFIC_WORKER')}</Typography>
+          </div>
           <Tooltip
             title={
               acquirementBlocked(voucherAcquirement)

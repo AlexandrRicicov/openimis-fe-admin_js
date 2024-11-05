@@ -68,6 +68,8 @@ const DEFAULT_CONFIG = {
     { key: 'workerVoucher.route.worker', ref: ROUTE_WORKER_VOUCHER_WORKER },
     { key: 'workerVoucher.route.groups', ref: ROUTE_GROUP_LIST },
     { key: 'workerVoucher.route.group', ref: ROUTE_GROUP },
+    { key: 'workerVoucher.route.assignVoucher', ref: ROUTE_WORKER_VOUCHER_ASSIGNMENT },
+    { key: 'workerVoucher.route.acquireVoucher', ref: ROUTE_WORKER_VOUCHER_ACQUIREMENT },
     { key: 'workerVoucher.WorkerVoucherStatusPicker', ref: WorkerVoucherStatusPicker },
     { key: 'workerVoucher.VoucherAcquirementMethodPicker', ref: VoucherAcquirementMethodPicker },
     { key: 'workerVoucher.WorkerMultiplePicker', ref: WorkerMultiplePicker },

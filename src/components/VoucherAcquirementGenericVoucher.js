@@ -15,6 +15,7 @@ import {
   useHistory,
   useModulesManager,
   useTranslations,
+  InfoButton,
 } from '@openimis/fe-core';
 import { acquireGenericVoucher, fetchMutation, genericVoucherValidation } from '../actions';
 import {
@@ -34,6 +35,12 @@ export const useStyles = makeStyles((theme) => ({
   },
   tableTitle: theme.table.title,
   item: theme.paper.item,
+  infoSection: {
+    display: 'flex',
+    justifyContent: 'start',
+    alignItems: 'center',
+    gap: theme.spacing(1),
+  },
 }));
 
 function VoucherAcquirementGenericVoucher() {
@@ -100,7 +107,7 @@ function VoucherAcquirementGenericVoucher() {
       historyPush(modulesManager, history, REF_ROUTE_BILL, [billId]);
       dispatch(
         coreAlert(
-          formatMessage('menu.voucherAcquirementSuccess'),
+          formatMessage('menu.voucherAcquirement'),
           formatMessageWithValues('workerVoucher.VoucherAcquirementForm.genericVoucherConfirmation', {
             quantity: voucherAcquirement?.quantity,
           }),
@@ -139,7 +146,10 @@ function VoucherAcquirementGenericVoucher() {
     <>
       <Grid xs={12}>
         <Grid container className={classes.paperHeaderTitle}>
-          <Typography variant="h5">{formatMessage('workerVoucher.acquirement.method.GENERIC_VOUCHER')}</Typography>
+          <div className={classes.infoSection}>
+            <InfoButton content={formatMessage('VoucherAcquirementGenericVoucher.form.moreInfo')} />
+            <Typography variant="h5">{formatMessage('workerVoucher.acquirement.method.GENERIC_VOUCHER')}</Typography>
+          </div>
           <Tooltip
             title={
               acquirementBlocked(voucherAcquirement)
