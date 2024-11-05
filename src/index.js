@@ -45,6 +45,7 @@ import GroupsPage from './pages/GroupsPage';
 import GroupDetailsPage from './pages/GroupDetailsPage';
 import PublicVoucherDetailsPage from './pages/PublicVoucherDetailsPage';
 import DashboardPage from './pages/DashboardPage';
+import MPassLoginButton from './components/MPassLoginButton';
 
 const ROUTE_PUBLIC_WORKER_VOUCHER_PAGE = 'voucher/check';
 const ROUTE_WORKER_VOUCHERS_LIST = 'voucher/vouchers';
@@ -77,16 +78,24 @@ const DEFAULT_CONFIG = {
   ],
   'worker.MainMenu': [
     {
+      text: <FormattedMessage module="workerVoucher" id="menu.workersList" />,
+      icon: <People />,
+      route: `/${ROUTE_WORKER_VOUCHER_WORKER_LIST}`,
+      filter: (rights) => [RIGHT_WORKER_SEARCH].some((right) => rights.includes(right)),
+    },
+    {
       text: <FormattedMessage module="workerVoucher" id="menu.groupList" />,
       icon: <TransferWithinAStationIcon />,
       route: `/${ROUTE_GROUP_LIST}`,
       filter: (rights) => [RIGHT_GROUP_SEARCH].some((right) => rights.includes(right)),
     },
     {
-      text: <FormattedMessage module="workerVoucher" id="menu.workersList" />,
-      icon: <People />,
-      route: `/${ROUTE_WORKER_VOUCHER_WORKER_LIST}`,
-      filter: (rights) => [RIGHT_WORKER_SEARCH].some((right) => rights.includes(right)),
+      text: <FormattedMessage module="workerVoucher" id="menu.voucherAssignment" />,
+      icon: <GroupAddIcon />,
+      route: `/${ROUTE_WORKER_VOUCHER_ASSIGNMENT}`,
+      filter: (rights, config) => config.genericVoucherEnabled
+      && [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right))
+      && ![INSPECTOR_RIGHT, ADMIN_RIGHT].some((right) => rights.includes(right)),
     },
     {
       text: <FormattedMessage module="workerVoucher" id="menu.voucherList" />,
@@ -100,14 +109,6 @@ const DEFAULT_CONFIG = {
       route: `/${ROUTE_WORKER_VOUCHER_ACQUIREMENT}`,
       filter: (rights) => [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right))
         && ![INSPECTOR_RIGHT, ADMIN_RIGHT].some((right) => rights.includes(right)),
-    },
-    {
-      text: <FormattedMessage module="workerVoucher" id="menu.voucherAssignment" />,
-      icon: <GroupAddIcon />,
-      route: `/${ROUTE_WORKER_VOUCHER_ASSIGNMENT}`,
-      filter: (rights, config) => config.genericVoucherEnabled
-      && [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right))
-      && ![INSPECTOR_RIGHT, ADMIN_RIGHT].some((right) => rights.includes(right)),
     },
   ],
   'admin.voucher.MainMenu': [
@@ -187,6 +188,7 @@ const DEFAULT_CONFIG = {
   'workerVoucher.VoucherHeadPanel': [BillVoucherHeadPanel],
   'workerVoucher.WorkerSearcherAction.select': WorkerSearcherSelectActions,
   'home.HomePage.customDashboard': DashboardPage,
+  'workerVoucher.MPassLoginButton': MPassLoginButton,
 };
 
 export const WorkerVoucherModule = (cfg) => ({ ...DEFAULT_CONFIG, ...cfg });

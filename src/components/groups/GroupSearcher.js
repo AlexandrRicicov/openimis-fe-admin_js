@@ -216,6 +216,7 @@ function GroupSearcher({ searcherActions, enableActionButtons }) {
         onDoubleClick={onDoubleClick}
         enableActionButtons={enableActionButtons}
         searcherActions={searcherActions}
+        infoButtonContent={formatMessage('workerVoucher.GroupSearcher.infoButtonContent')}
       />
       <SelectDialog
         confirmState={deleteGroupDialogOpen}

@@ -219,6 +219,7 @@ function VoucherSearcher({ downloadWorkerVoucher, fetchWorkerVouchers, clearWork
         exportFileFormat={exportFileFormat}
         setExportFileFormat={setExportFileFormat}
         downloadWithIconButton
+        displayClearAllColsButton={false}
       />
       {failedExport && (
         <Dialog open={failedExport} fullWidth maxWidth="sm">
