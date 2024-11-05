@@ -44,6 +44,7 @@ import WorkerSearcherSelectActions from './components/WorkerSearcherSelectAction
 import GroupsPage from './pages/GroupsPage';
 import GroupDetailsPage from './pages/GroupDetailsPage';
 import PublicVoucherDetailsPage from './pages/PublicVoucherDetailsPage';
+import DashboardPage from './pages/DashboardPage';
 
 const ROUTE_PUBLIC_WORKER_VOUCHER_PAGE = 'voucher/check';
 const ROUTE_WORKER_VOUCHERS_LIST = 'voucher/vouchers';
@@ -67,6 +68,8 @@ const DEFAULT_CONFIG = {
     { key: 'workerVoucher.route.worker', ref: ROUTE_WORKER_VOUCHER_WORKER },
     { key: 'workerVoucher.route.groups', ref: ROUTE_GROUP_LIST },
     { key: 'workerVoucher.route.group', ref: ROUTE_GROUP },
+    { key: 'workerVoucher.route.assignVoucher', ref: ROUTE_WORKER_VOUCHER_ASSIGNMENT },
+    { key: 'workerVoucher.route.acquireVoucher', ref: ROUTE_WORKER_VOUCHER_ACQUIREMENT },
     { key: 'workerVoucher.WorkerVoucherStatusPicker', ref: WorkerVoucherStatusPicker },
     { key: 'workerVoucher.VoucherAcquirementMethodPicker', ref: VoucherAcquirementMethodPicker },
     { key: 'workerVoucher.WorkerMultiplePicker', ref: WorkerMultiplePicker },
@@ -183,6 +186,7 @@ const DEFAULT_CONFIG = {
   ],
   'workerVoucher.VoucherHeadPanel': [BillVoucherHeadPanel],
   'workerVoucher.WorkerSearcherAction.select': WorkerSearcherSelectActions,
+  'home.HomePage.customDashboard': DashboardPage,
 };
 
 export const WorkerVoucherModule = (cfg) => ({ ...DEFAULT_CONFIG, ...cfg });
