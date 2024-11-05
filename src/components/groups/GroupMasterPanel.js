@@ -1,4 +1,5 @@
 import React from 'react';
+import _debounce from 'lodash/debounce';
 
 import {
   Divider, Grid, Paper, Typography, Button, CircularProgress,
@@ -9,7 +10,7 @@ import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import {
   FormattedMessage, FormPanel, TextInput, withModulesManager,
 } from '@openimis/fe-core';
-import { EMPTY_STRING } from '../../constants';
+import { DEFAULT_DEBOUNCE_TIME, EMPTY_STRING } from '../../constants';
 import GroupWorkerManagePanel from './GroupWorkerManagePanel';
 
 const styles = (theme) => ({
@@ -23,6 +24,8 @@ class GroupMasterPanel extends FormPanel {
     const {
       classes, edited, isSaving, onEditedChanged, save, formatMessage, canSave,
     } = this.props;
+
+    const onGroupNameChange = _debounce((v) => this.updateAttribute('name', v), DEFAULT_DEBOUNCE_TIME / 3);
 
     return (
       <Grid item xs={12}>
@@ -53,7 +56,7 @@ class GroupMasterPanel extends FormPanel {
               required
               readOnly={isSaving}
               value={edited?.name ?? EMPTY_STRING}
-              onChange={(v) => this.updateAttribute('name', v)}
+              onChange={onGroupNameChange}
             />
           </Grid>
           <Divider />

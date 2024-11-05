@@ -32,8 +32,9 @@ import {
   useHistory,
   useModulesManager,
   useTranslations,
+  parseData,
 } from '@openimis/fe-core';
-import { fetchAllAvailableWorkersInBatches } from '../../actions';
+import { fetchAllAvailableWorkersInSystem } from '../../actions';
 import {
   DEFAULT_DEBOUNCE_TIME, EMPTY_STRING, MODULE_NAME, REF_ROUTE_GROUP_LIST,
 } from '../../constants';
@@ -97,8 +98,8 @@ function GroupWorkerManagePanel({ edited, onChange, disabled }) {
   const fetchAllAvailableWorkers = useCallback(async () => {
     setIsLoading(true);
     try {
-      const workerData = await fetchAllAvailableWorkersInBatches(dispatch, economicUnit.code);
-      setAllWorkers(workerData.allAvailableWorkers);
+      const workerData = await dispatch(fetchAllAvailableWorkersInSystem(economicUnit.code));
+      setAllWorkers(parseData(workerData.payload.data.allAvailableWorkers));
     } catch (error) {
       throw new Error(`[GROUP_WORKER_MANAGE_PANEL] Error fetching workers: ${error}`);
     } finally {

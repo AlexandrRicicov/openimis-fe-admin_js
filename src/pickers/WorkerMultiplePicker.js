@@ -15,6 +15,7 @@ import Popper from '@material-ui/core/Popper';
 import { useModulesManager, useTranslations, parseData } from '@openimis/fe-core';
 import WorkerImportDialog from '../components/WorkerImportDialog';
 import {
+  EMPTY_STRING,
   MAX_CELLS,
   MODULE_NAME,
   USER_ECONOMIC_UNIT_STORAGE_KEY,
@@ -48,20 +49,23 @@ function WorkerMultiplePicker({
 
   const storedUserEconomicUnit = localStorage.getItem(USER_ECONOMIC_UNIT_STORAGE_KEY);
   const userEconomicUnit = JSON.parse(storedUserEconomicUnit);
-  const economicUnitCode = userEconomicUnit?.code || '';
+  const economicUnitCode = userEconomicUnit?.code || EMPTY_STRING;
 
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
       setGroup(null);
       try {
-        const { allAvailableWorkers, previousWorkers, previousDayWorkers } = await fetchAllAvailableWorkers(
-          dispatch,
-          economicUnitCode,
-          { startDate: yesterday, endDate: yesterday },
+        const workersData = await dispatch(
+          fetchAllAvailableWorkers(economicUnitCode, { startDate: yesterday, endDate: yesterday }),
         );
+        const allAvailableWorkers = parseData(workersData.payload.data.allAvailableWorkers);
         setAllWorkers(allAvailableWorkers || []);
+
+        const previousWorkers = parseData(workersData.payload.data.previousWorkers);
         setPreviousWorkers(previousWorkers || []);
+
+        const previousDayWorkers = parseData(workersData.payload.data.previousDayWorkers);
         setPreviousDayWorkers(previousDayWorkers || []);
       } catch (err) {
         setError(err);
