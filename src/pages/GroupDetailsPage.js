@@ -42,7 +42,6 @@ function GroupDetailsPage({ match }) {
   const groupUuid = match?.params?.group_uuid;
   const { formatMessage, formatMessageWithValues } = useTranslations(MODULE_NAME, modulesManager);
   const [reset, setReset] = useState(0);
-  const [isGroupSaving, setIsGroupSaving] = useState(false);
 
   const titleParams = (group) => ({
     name: group?.name ?? EMPTY_STRING,
@@ -83,7 +82,6 @@ function GroupDetailsPage({ match }) {
   const canSave = () => !!(edited?.name && edited?.workers?.length);
 
   const onSave = () => {
-    setIsGroupSaving(true);
     try {
       if (groupUuid) {
         dispatch(updateGroup(economicUnit, edited, 'Update Group'));
@@ -96,8 +94,6 @@ function GroupDetailsPage({ match }) {
           detail: error,
         }),
       );
-    } finally {
-      setIsGroupSaving(false);
     }
   };
 
@@ -138,7 +134,6 @@ function GroupDetailsPage({ match }) {
         edited={edited}
         back={() => history.goBack()}
         Panels={[GroupMasterPanel]}
-        isSaving={isGroupSaving}
         formatMessage={formatMessage}
         rights={rights}
         onEditedChanged={setEdited}

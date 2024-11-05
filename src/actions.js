@@ -4,7 +4,6 @@ import {
   formatMutation,
   graphqlWithVariables,
   formatGQLString,
-  parseData,
   decodeId,
 } from '@openimis/fe-core';
 import { ACTION_TYPE } from './reducer';
@@ -321,48 +320,10 @@ export function fetchWorker(modulesManager, params) {
   return graphql(payload, ACTION_TYPE.GET_WORKER);
 }
 
-const processCategoryData = (category, data, allData) => {
-  if (data[category]) {
-    allData[category].push(...parseData(data[category]));
-    return {
-      hasNextPage: data[category].pageInfo.hasNextPage,
-      endCursor: data[category].pageInfo.endCursor,
-    };
-  }
-  return { hasNextPage: false, endCursor: null };
-};
-
-export async function fetchAllPages(dispatch, query, variables, categories) {
-  const allData = Object.fromEntries(categories.map((category) => [category, []]));
-  let hasNextPage = true;
-  let after = 'YXJyYXljb25uZWN0aW9uOi0x'; // arrayconnection:-1
-
-  while (hasNextPage) {
-    try {
-      // eslint-disable-next-line no-await-in-loop
-      const response = await dispatch(graphqlWithVariables(query, { ...variables, after }));
-      const data = response?.payload?.data || {};
-
-      const pageInfos = categories.map((category) => processCategoryData(category, data, allData));
-
-      hasNextPage = pageInfos.some((pageInfo) => pageInfo.hasNextPage);
-
-      after = pageInfos.find((info) => info.hasNextPage)?.endCursor;
-
-      if (!hasNextPage) {
-        hasNextPage = false;
-      }
-    } catch (error) {
-      hasNextPage = false;
-    }
-  }
-  return allData;
-}
-
-export async function fetchAllAvailableWorkers(dispatch, economicUnitCode, dateRange) {
+export function fetchAllAvailableWorkers(economicUnitCode, dateRange) {
   const query = `
-    query WorkerMultiplePicker($economicUnitCode: String!, $dateRange: DateRangeInclusiveInputType, $after: String!) {
-      allAvailableWorkers: worker(economicUnitCode: $economicUnitCode, after: $after) {
+    query WorkerMultiplePicker($economicUnitCode: String!, $dateRange: DateRangeInclusiveInputType) {
+      allAvailableWorkers: worker(economicUnitCode: $economicUnitCode) {
         edges {
           node {
             id
@@ -378,7 +339,7 @@ export async function fetchAllAvailableWorkers(dispatch, economicUnitCode, dateR
           endCursor
         }
       }
-      previousWorkers: previousWorkers(economicUnitCode: $economicUnitCode, after: $after) {
+      previousWorkers: previousWorkers(economicUnitCode: $economicUnitCode) {
         edges {
             node {
               id
@@ -397,7 +358,6 @@ export async function fetchAllAvailableWorkers(dispatch, economicUnitCode, dateR
     previousDayWorkers: previousWorkers(
         economicUnitCode: $economicUnitCode
         dateRange: $dateRange
-        after: $after
       ) {
         edges {
           node {
@@ -416,19 +376,14 @@ export async function fetchAllAvailableWorkers(dispatch, economicUnitCode, dateR
       }
     }  
   `;
-  const response = await fetchAllPages(dispatch, query, { economicUnitCode, dateRange }, [
-    'allAvailableWorkers',
-    'previousWorkers',
-    'previousDayWorkers',
-  ]);
 
-  return response;
+  return graphqlWithVariables(query, { economicUnitCode, dateRange });
 }
 
-export async function fetchAllAvailableWorkersInBatches(dispatch, economicUnitCode) {
+export function fetchAllAvailableWorkersInSystem(economicUnitCode) {
   const query = `
-    query getAllAvailableWorkers($economicUnitCode: String!, $after: String!) {
-      allAvailableWorkers: worker(economicUnitCode: $economicUnitCode, after: $after) {
+    query getAllAvailableWorkers($economicUnitCode: String!) {
+      allAvailableWorkers: worker(economicUnitCode: $economicUnitCode) {
         edges {
           node {
             id
@@ -447,9 +402,7 @@ export async function fetchAllAvailableWorkersInBatches(dispatch, economicUnitCo
     }
   `;
 
-  const response = await fetchAllPages(dispatch, query, { economicUnitCode }, ['allAvailableWorkers']);
-
-  return response;
+  return graphqlWithVariables(query, { economicUnitCode });
 }
 
 export function downloadWorkers(params) {
