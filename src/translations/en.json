@@ -230,5 +230,6 @@
   "workerVoucher.SystemData.voucher.cancelled": "Cancelled",
   "workerVoucher.SystemData.payment.title": "Payments",
   "workerVoucher.SystemData.payment.paid": "Paid",
-  "workerVoucher.SystemData.payment.unpaid": "Unpaid"
+  "workerVoucher.SystemData.payment.unpaid": "Unpaid",
+  "workerVoucher.MPassLoginButton.tooltip": "Log in with MPass"
 }

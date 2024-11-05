@@ -45,6 +45,7 @@ import GroupsPage from './pages/GroupsPage';
 import GroupDetailsPage from './pages/GroupDetailsPage';
 import PublicVoucherDetailsPage from './pages/PublicVoucherDetailsPage';
 import DashboardPage from './pages/DashboardPage';
+import MPassLoginButton from './components/MPassLoginButton';
 
 const ROUTE_PUBLIC_WORKER_VOUCHER_PAGE = 'voucher/check';
 const ROUTE_WORKER_VOUCHERS_LIST = 'voucher/vouchers';
@@ -187,6 +188,7 @@ const DEFAULT_CONFIG = {
   'workerVoucher.VoucherHeadPanel': [BillVoucherHeadPanel],
   'workerVoucher.WorkerSearcherAction.select': WorkerSearcherSelectActions,
   'home.HomePage.customDashboard': DashboardPage,
+  'workerVoucher.MPassLoginButton': MPassLoginButton,
 };
 
 export const WorkerVoucherModule = (cfg) => ({ ...DEFAULT_CONFIG, ...cfg });
