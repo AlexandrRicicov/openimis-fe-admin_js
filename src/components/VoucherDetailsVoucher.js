@@ -5,9 +5,10 @@ import { Grid, Divider } from '@material-ui/core';
 import { PublishedComponent, TextInput } from '@openimis/fe-core';
 import WorkerVoucherStatusPicker from '../pickers/WorkerVoucherStatusPicker';
 import VoucherQRCode from './VoucherQRCode';
+import { trimDate } from '../utils/utils';
 
 function VoucherDetailsVoucher({
-  workerVoucher, classes, readOnly, formatMessage,
+  workerVoucher, classes, readOnly, formatMessage, formatDateTimeFromISO,
 }) {
   return (
     <>
@@ -37,7 +38,7 @@ function VoucherDetailsVoucher({
               pubRef="core.DatePicker"
               module="workerVoucher"
               label="workerVoucher.assignedDate"
-              value={workerVoucher?.assignedDate}
+              value={trimDate(workerVoucher?.assignedDate)}
               readOnly={readOnly}
             />
           </Grid>
@@ -45,9 +46,10 @@ function VoucherDetailsVoucher({
             <PublishedComponent
               pubRef="core.DatePicker"
               module="workerVoucher"
-              label="workerVoucher.expiryDate"
-              value={workerVoucher?.expiryDate}
+              label="workerVoucher.dateOfAssignment"
+              value={formatDateTimeFromISO(workerVoucher?.dateOfAssignment)}
               readOnly={readOnly}
+              format="YYYY-MM-DD HH:mm:ss"
             />
           </Grid>
           <Grid item xs={4} className={classes.item}>
@@ -55,7 +57,17 @@ function VoucherDetailsVoucher({
               pubRef="core.DatePicker"
               module="workerVoucher"
               label="workerVoucher.createdDate"
-              value={workerVoucher?.dateCreated}
+              value={formatDateTimeFromISO(workerVoucher?.dateCreated)}
+              readOnly={readOnly}
+              format="YYYY-MM-DD HH:mm:ss"
+            />
+          </Grid>
+          <Grid item xs={4} className={classes.item}>
+            <PublishedComponent
+              pubRef="core.DatePicker"
+              module="workerVoucher"
+              label="workerVoucher.expiryDate"
+              value={trimDate(workerVoucher?.expiryDate)}
               readOnly={readOnly}
             />
           </Grid>

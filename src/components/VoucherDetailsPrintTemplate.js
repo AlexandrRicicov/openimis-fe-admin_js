@@ -11,7 +11,7 @@ import { useTranslations, useModulesManager } from '@openimis/fe-core';
 import {
   EMPTY_STRING, MODULE_NAME, REF_GET_BILL_LINE_ITEM, WORKER_VOUCHER_STATUS,
 } from '../constants';
-import { extractEmployerName, extractWorkerName } from '../utils/utils';
+import { extractEmployerName, extractWorkerName, trimDate } from '../utils/utils';
 import VoucherQRCode from './VoucherQRCode';
 
 const useStyles = makeStyles((theme) => ({
@@ -75,7 +75,10 @@ const VoucherDetailsPrintTemplate = forwardRef(({ workerVoucher, logo }, ref) =>
   const dispatch = useDispatch();
   const classes = useStyles();
   const modulesManager = useModulesManager();
-  const { formatMessage, formatMessageWithValues } = useTranslations(modulesManager, MODULE_NAME);
+  const { formatMessage, formatMessageWithValues, formatDateTimeFromISO } = useTranslations(
+    MODULE_NAME,
+    modulesManager,
+  );
   const isAssignedStatus = workerVoucher.status === WORKER_VOUCHER_STATUS.ASSIGNED;
   const [voucherValue, setVoucherValue] = useState(null);
   const getBillLineItem = useMemo(() => modulesManager.getRef(REF_GET_BILL_LINE_ITEM), [modulesManager]);
@@ -134,10 +137,19 @@ const VoucherDetailsPrintTemplate = forwardRef(({ workerVoucher, logo }, ref) =>
           </div>
           <div>
             <p className={classes.workerInfo}>
-              {isAssignedStatus && workerVoucher?.assignedDate ? workerVoucher.assignedDate : EMPTY_STRING}
+              {isAssignedStatus && workerVoucher?.assignedDate
+                ? trimDate(workerVoucher.assignedDate) : EMPTY_STRING}
             </p>
             <Divider />
             <p className={classes.annotation}>{formatMessage('workerVoucher.template.validOn')}</p>
+          </div>
+          <div>
+            <p className={classes.workerInfo}>
+              {isAssignedStatus && workerVoucher?.dateOfAssignment
+                ? formatDateTimeFromISO(workerVoucher.dateOfAssignment) : EMPTY_STRING}
+            </p>
+            <Divider />
+            <p className={classes.annotation}>{formatMessage('workerVoucher.template.dateOfAssignment')}</p>
           </div>
           <p className={classes.voucherValue}>{`${voucherValue || 0} ${formatMessage('currency')}`}</p>
         </div>

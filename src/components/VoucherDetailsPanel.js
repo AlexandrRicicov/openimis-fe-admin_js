@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function VoucherDetailsPanel({
-  workerVoucher, readOnly = true, formatMessage, rights, logo,
+  workerVoucher, readOnly = true, formatMessage, rights, logo, formatDateTimeFromISO,
 }) {
   const modulesManager = useModulesManager();
   const history = useHistory();
@@ -97,6 +97,7 @@ function VoucherDetailsPanel({
         readOnly={readOnly}
         classes={classes}
         formatMessage={formatMessage}
+        formatDateTimeFromISO={formatDateTimeFromISO}
       />
       <VoucherDetailsWorker workerVoucher={workerVoucher} readOnly={readOnly} classes={classes} />
       <VoucherDetailsEmployer workerVoucher={workerVoucher} readOnly={readOnly} classes={classes} />
