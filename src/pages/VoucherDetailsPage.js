@@ -7,9 +7,7 @@ import {
   Form, Helmet, useHistory, useModulesManager, useTranslations,
 } from '@openimis/fe-core';
 import { clearWorkerVoucher, fetchWorkerVoucher } from '../actions';
-import {
-  EMPTY_STRING, MODULE_NAME, VOUCHER_RIGHT_SEARCH,
-} from '../constants';
+import { EMPTY_STRING, MODULE_NAME, VOUCHER_RIGHT_SEARCH } from '../constants';
 import VoucherDetailsPanel from '../components/VoucherDetailsPanel';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +19,10 @@ function VoucherDetailsPage({ match, logo }) {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const history = useHistory();
-  const { formatMessage, formatMessageWithValues } = useTranslations(MODULE_NAME, modulesManager);
+  const { formatMessage, formatMessageWithValues, formatDateTimeFromISO } = useTranslations(
+    MODULE_NAME,
+    modulesManager,
+  );
   const rights = useSelector((state) => state.core?.user?.i_user?.rights ?? []);
   const workerVoucherUuid = match?.params?.voucher_uuid;
   const { workerVoucher, fetchingWorkerVoucher, errorWorkerVoucher } = useSelector((state) => state.workerVoucher);
@@ -60,6 +61,7 @@ function VoucherDetailsPage({ match, logo }) {
           readOnly
           logo={logo}
           formatMessage={formatMessage}
+          formatDateTimeFromISO={formatDateTimeFromISO}
           rights={rights}
         />
       </div>

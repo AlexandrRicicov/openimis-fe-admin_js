@@ -21,6 +21,7 @@ const WORKER_VOUCHER_PROJECTION = (modulesManager) => [
   'expiryDate',
   'dateCreated',
   'dateUpdated',
+  'dateOfAssignment',
   `insuree ${modulesManager.getProjection('insuree.InsureePicker.projection')}`,
   `policyholder ${modulesManager.getProjection('policyHolder.PolicyHolderPicker.projection')}`,
 ];

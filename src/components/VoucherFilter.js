@@ -90,6 +90,21 @@ function VoucherFilter({ filters, onChangeFilters, formatMessage }) {
         <PublishedComponent
           pubRef="core.DatePicker"
           module="workerVoucher"
+          label="workerVoucher.dateOfAssignment"
+          value={filterValue('dateOfAssignment')}
+          onChange={(dateOfAssignment) => onChangeFilters([
+            {
+              id: 'dateOfAssignment',
+              value: dateOfAssignment,
+              filter: `dateOfAssignment: "${dateOfAssignment}"`,
+            },
+          ])}
+        />
+      </Grid>
+      <Grid item xs={3} className={classes.item}>
+        <PublishedComponent
+          pubRef="core.DatePicker"
+          module="workerVoucher"
           label="workerVoucher.expiryDate"
           value={filterValue('expiryDate')}
           onChange={(expiryDate) => onChangeFilters([

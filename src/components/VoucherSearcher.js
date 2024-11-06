@@ -8,7 +8,12 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import {
-  Searcher, useHistory, useModulesManager, useTranslations, downloadExport, EXPORT_FILE_FORMATS,
+  Searcher,
+  useHistory,
+  useModulesManager,
+  useTranslations,
+  downloadExport,
+  EXPORT_FILE_FORMATS,
 } from '@openimis/fe-core';
 import { fetchWorkerVouchers, downloadWorkerVoucher, clearWorkerVoucherExport } from '../actions';
 import {
@@ -42,16 +47,17 @@ function VoucherSearcher({ downloadWorkerVoucher, fetchWorkerVouchers, clearWork
   const { economicUnit } = useSelector((state) => state.policyHolder);
   const isAdminOrInspector = rights.includes(INSPECTOR_RIGHT) || rights.includes(ADMIN_RIGHT);
 
-  const { formatMessage, formatMessageWithValues } = useTranslations(MODULE_NAME, modulesManager);
+  const { formatMessage, formatMessageWithValues, formatDateTimeFromISO } = useTranslations(
+    MODULE_NAME,
+    modulesManager,
+  );
 
   const [failedExport, setFailedExport] = useState(false);
   const [queryParams, setQueryParams] = useState([]);
   const [exportFileFormat, setExportFileFormat] = useState(EXPORT_FILE_FORMATS.csv);
 
   const exportConfiguration = {
-    exportFields: [
-      'status',
-    ],
+    exportFields: ['status'],
     additionalExportFields: {
       policyholder_Code: economicUnit?.code,
     },
@@ -90,6 +96,7 @@ function VoucherSearcher({ downloadWorkerVoucher, fetchWorkerVouchers, clearWork
     'workerVoucher.worker',
     'workerVoucher.status',
     'workerVoucher.assignedDate',
+    'workerVoucher.dateOfAssignment',
     'workerVoucher.expiryDate',
     'emptyLabel',
   ];
@@ -100,6 +107,7 @@ function VoucherSearcher({ downloadWorkerVoucher, fetchWorkerVouchers, clearWork
     ['insuree', true],
     ['status', true],
     ['assignedDate', true],
+    ['dateOfAssignment', true],
     ['expiryDate', true],
   ];
 
@@ -118,6 +126,7 @@ function VoucherSearcher({ downloadWorkerVoucher, fetchWorkerVouchers, clearWork
       : formatMessage('workerVoucher.unassigned')),
     (workerVoucher) => formatMessage(`workerVoucher.status.${workerVoucher.status}`),
     (workerVoucher) => trimDate(workerVoucher.assignedDate),
+    (workerVoucher) => formatDateTimeFromISO(workerVoucher.dateOfAssignment),
     (workerVoucher) => trimDate(workerVoucher.expiryDate),
     (workerVoucher) => (
       <div style={{ textAlign: 'right' }}>
