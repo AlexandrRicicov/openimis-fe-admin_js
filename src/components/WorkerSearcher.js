@@ -35,7 +35,6 @@ import {
   ROWS_PER_PAGE_OPTIONS,
 } from '../constants';
 import WorkerFilter from './WorkerFilter';
-import { ACTION_TYPE } from '../reducer';
 import { useUploadWorkerContext } from '../context/UploadWorkerContext';
 import { getLastMutationLog } from '../utils/utils';
 
@@ -107,12 +106,6 @@ function WorkerSearcher({
       }
     },
     [economicUnit],
-  );
-
-  const fetchAllAvailableWorkers = () => fetchWorkersAction(
-    modulesManager,
-    [`economicUnitCode:"${economicUnit.code}"`],
-    ACTION_TYPE.REQUEST,
   );
 
   const headers = () => [
@@ -274,7 +267,6 @@ function WorkerSearcher({
         selectWithCheckbox={!!isAuthorized}
         actionsContributionKey={isAuthorized ? WORKER_SEARCHER_ACTION_CONTRIBUTION_KEY : EMPTY_STRING}
         selectionMessage="workerVoucher.WorkerSearcher.selection"
-        getAllItems={fetchAllAvailableWorkers}
         module="workerVoucher"
         FilterPane={workerFilters}
         fetch={fetchWorkers}
