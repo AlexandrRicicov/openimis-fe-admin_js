@@ -757,3 +757,23 @@ export function fetchSystemData(economicUnit) {
     economicUnitUuid: decodeId(economicUnit.id),
   });
 }
+
+export function changeGenericVoucherStatusAfterPrint(workerVoucher, clientMutationLabel) {
+  const mutationInput = `
+    ${`voucherId: "${workerVoucher.uuid}"`}
+  `;
+
+  const mutation = formatMutation('setVoucherToPrinted', mutationInput, clientMutationLabel);
+  const requestedDateTime = new Date();
+
+  return graphql(
+    mutation.payload,
+    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.CHANGE_VOUCHER_STATUS_TO_PRINTED), ERROR(ACTION_TYPE.MUTATION)],
+    {
+      actionType: ACTION_TYPE.CHANGE_VOUCHER_STATUS_TO_PRINTED,
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    },
+  );
+}

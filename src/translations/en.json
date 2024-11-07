@@ -46,6 +46,7 @@
   "workerVoucher.status.EXPIRED": "EXPIRED",
   "workerVoucher.status.CANCELED": "CANCELED",
   "workerVoucher.status.CLOSED": "CLOSED",
+  "workerVoucher.status.PRINTED": "PRINTED",
   "workerVoucher.WorkersPage.addAction": "Add Worker",
   "workerVoucher.save": "Save",
   "workerVoucher.add": "Add",
@@ -235,5 +236,9 @@
   "workerVoucher.SystemData.payment.unpaid": "Unpaid",
   "workerVoucher.MPassLoginButton.tooltip": "Log in with MPass",
   "workerVoucher.GroupSearcher.infoButtonContent": "Create worker groups for specific periods and purposes. This will help you manage active workers more easily for a given period.",
-  "workerVoucher.GroupWorkerManagePanel.inputTooltip": "Enter one of the following: IDNP, First Name, or Last Name of the worker."
+  "workerVoucher.GroupWorkerManagePanel.inputTooltip": "Enter one of the following: IDNP, First Name, or Last Name of the worker.",
+  "workerVoucher.VoucherGenericPrintModal.title": "Print Non-Personal Voucher",
+  "workerVoucher.VoucherGenericPrintModal.description": "You are about to print a non-personal voucher. After printing, the voucher will be marked as PRINTED, making it unusable within the system. This action is permanent and cannot be undone.",
+  "workerVoucher.VoucherGenericPrintModal.checkbox": "I confirm I want to print the non-personal voucher and I understand its consequences.",
+  "workerVoucher.VoucherGenericPrintModal.confirm": "Proceed"
 }
