@@ -27,6 +27,12 @@ export const useStyles = makeStyles((theme) => ({
   item: theme.paper.item,
 }));
 
+function parseAndFormatMessage(message, extensions, formatMessage, formatMessageWithValues) {
+  return extensions
+    ? formatMessageWithValues(message, extensions)
+    : formatMessage(message);
+}
+
 function VoucherAcquirementPaymentModal({
   type,
   openState,
@@ -46,7 +52,9 @@ function VoucherAcquirementPaymentModal({
     if (acquirementSummary?.errors) {
       return (
         <Typography color="error">
-          {acquirementSummary?.errors?.map(({ message }, index) => `${index + 1}. ${message}.`)}
+          {acquirementSummary?.errors?.map((
+            { message, extensions }, index
+          ) => `${index + 1}. ${parseAndFormatMessage(message, extensions, formatMessage, formatMessageWithValues)}.`)}
         </Typography>
       );
     }

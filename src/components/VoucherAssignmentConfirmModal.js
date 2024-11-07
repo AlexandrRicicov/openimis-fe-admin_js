@@ -27,30 +27,10 @@ export const useStyles = makeStyles((theme) => ({
   item: theme.paper.item,
 }));
 
-function parseAndFormatMessage(message, formatMessage, formatMessageWithValues) {
-  message = message
-    .replace(/'/g, '"')
-    .replace(/core\.datetimes\.ad_datetime\.date\(([^)]+)\)/g, '"$1"');
-
-  try {
-    const parsedMessage = JSON.parse(message);
-    const messageKey = parsedMessage.message;
-    const params = parsedMessage.params || {};
-
-    Object.keys(params).forEach(key => {
-      if (typeof params[key] === "string" && /^\d{4}, \d{1,2}, \d{1,2}$/.test(params[key])) {
-        const [year, month, day] = params[key].split(',').map(part => part.trim());
-        params[key] = `${year}-${month}-${day}`;
-      }
-    });
-
-    return Object.keys(params).length > 0
-      ? formatMessageWithValues(messageKey, params)
-      : formatMessage(messageKey);
-  } catch (error) {
-    console.error("Error parsing message:", error);
-    return formatMessage(message);
-  }
+function parseAndFormatMessage(message, extensions, formatMessage, formatMessageWithValues) {
+  return extensions
+      ? formatMessageWithValues(message, extensions)
+      : formatMessage(message);
 }
 
 function VoucherAssignmentConfirmModal({
@@ -71,9 +51,9 @@ function VoucherAssignmentConfirmModal({
     if (assignmentSummary?.errors) {
       return (
         <Typography color="error">
-          {assignmentSummary.errors.map(({ message }, index) => (
+          {assignmentSummary.errors.map(({ message, extensions }, index) => (
             <div key={index}>
-              {`${index + 1}. ${parseAndFormatMessage(message, formatMessage, formatMessageWithValues)}`}
+              {`${index + 1}. ${parseAndFormatMessage(message, extensions, formatMessage, formatMessageWithValues)}`}
             </div>
           ))}
         </Typography>
