@@ -1,22 +1,27 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 
 import {
-  Divider, Grid, Typography, Button,
+  Button, Divider, Grid, Typography,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import PrintIcon from '@material-ui/icons/Print';
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import { makeStyles } from '@material-ui/styles';
 
 import {
-  FormattedMessage, useModulesManager, useHistory, historyPush,
+  FormattedMessage, historyPush, useHistory, useModulesManager,
 } from '@openimis/fe-core';
-import { PRINTABLE, REF_ROUTE_BILL, VOUCHER_RIGHT_SEARCH } from '../constants';
+import { changeGenericVoucherStatusAfterPrint, fetchWorkerVoucher } from '../actions';
+import {
+  PRINTABLE, REF_ROUTE_BILL, VOUCHER_RIGHT_SEARCH, WORKER_VOUCHER_STATUS,
+} from '../constants';
 import { isTheVoucherExpired } from '../utils/utils';
 import VoucherDetailsEmployer from './VoucherDetailsEmployer';
+import VoucherDetailsPrintTemplate from './VoucherDetailsPrintTemplate';
 import VoucherDetailsVoucher from './VoucherDetailsVoucher';
 import VoucherDetailsWorker from './VoucherDetailsWorker';
-import VoucherDetailsPrintTemplate from './VoucherDetailsPrintTemplate';
+import VoucherGenericPrintModal from './VoucherGenericPrintModal';
 
 const useStyles = makeStyles((theme) => ({
   tableTitle: theme.table.title,
@@ -36,14 +41,29 @@ function VoucherDetailsPanel({
 }) {
   const modulesManager = useModulesManager();
   const history = useHistory();
+  const dispatch = useDispatch();
   const voucherPrintTemplateRef = useRef(null);
   const classes = useStyles();
+  const isAssignedStatus = workerVoucher.status === WORKER_VOUCHER_STATUS.ASSIGNED;
+  const [isPrintConfirmationModalOpen, setIsPrintConfirmationModalOpen] = useState(false);
 
   const handlePrint = useReactToPrint({
     documentTitle: `${workerVoucher.code}`,
   });
 
   const redirectToTheLinkedBill = () => historyPush(modulesManager, history, REF_ROUTE_BILL, [workerVoucher.billId]);
+
+  const openPrintConfirmationModal = () => setIsPrintConfirmationModalOpen(true);
+
+  const closePrintConfirmationModal = () => setIsPrintConfirmationModalOpen(false);
+
+  const onGenericVoucherPrint = () => {
+    dispatch(changeGenericVoucherStatusAfterPrint(workerVoucher, 'Change Status After Print')).then(() => {
+      closePrintConfirmationModal();
+      dispatch(fetchWorkerVoucher(modulesManager, [`id: "${workerVoucher.uuid}"`]));
+    });
+    handlePrint(null, () => voucherPrintTemplateRef.current);
+  };
 
   return (
     <div>
@@ -71,7 +91,13 @@ function VoucherDetailsPanel({
                   disabled={!workerVoucher.billId || isTheVoucherExpired(workerVoucher)}
                   onClick={(e) => {
                     e.preventDefault();
-                    handlePrint(null, () => voucherPrintTemplateRef.current);
+
+                    if (isAssignedStatus) {
+                      handlePrint(null, () => voucherPrintTemplateRef.current);
+                      return;
+                    }
+
+                    openPrintConfirmationModal();
                   }}
                 >
                   <Typography variant="body2">{formatMessage('workerVoucher.printVoucher')}</Typography>
@@ -101,8 +127,18 @@ function VoucherDetailsPanel({
       />
       <VoucherDetailsWorker workerVoucher={workerVoucher} readOnly={readOnly} classes={classes} />
       <VoucherDetailsEmployer workerVoucher={workerVoucher} readOnly={readOnly} classes={classes} />
+      <VoucherGenericPrintModal
+        open={isPrintConfirmationModalOpen}
+        onClose={closePrintConfirmationModal}
+        onConfirm={onGenericVoucherPrint}
+      />
       <div style={{ display: 'none' }}>
-        <VoucherDetailsPrintTemplate ref={voucherPrintTemplateRef} logo={logo} workerVoucher={workerVoucher} />
+        <VoucherDetailsPrintTemplate
+          ref={voucherPrintTemplateRef}
+          logo={logo}
+          workerVoucher={workerVoucher}
+          isAssignedStatus={isAssignedStatus}
+        />
       </div>
     </div>
   );
