@@ -46,6 +46,15 @@ function VoucherFilter({ filters, onChangeFilters, formatMessage }) {
     }
   };
 
+  const createDateTimeStamp = (key, value) => {
+    if (!key || !value) return EMPTY_STRING;
+
+    const startStamp = `${value}T00:00:00`;
+    const endStamp = `${value}T23:59:59`;
+
+    return `${key}_Gte: "${startStamp}", ${key}_Lte: "${endStamp}"`;
+  };
+
   return (
     <Grid container className={classes.form}>
       <Grid item xs={3} className={classes.item}>
@@ -81,7 +90,7 @@ function VoucherFilter({ filters, onChangeFilters, formatMessage }) {
             {
               id: 'assignedDate',
               value: assignedDate,
-              filter: `assignedDate: "${assignedDate}"`,
+              filter: createDateTimeStamp('assignedDate', assignedDate),
             },
           ])}
         />
@@ -96,7 +105,7 @@ function VoucherFilter({ filters, onChangeFilters, formatMessage }) {
             {
               id: 'dateOfAssignment',
               value: dateOfAssignment,
-              filter: `dateOfAssignment: "${dateOfAssignment}"`,
+              filter: createDateTimeStamp('dateOfAssignment', dateOfAssignment),
             },
           ])}
         />
@@ -111,7 +120,7 @@ function VoucherFilter({ filters, onChangeFilters, formatMessage }) {
             {
               id: 'expiryDate',
               value: expiryDate,
-              filter: `expiryDate: "${expiryDate}"`,
+              filter: createDateTimeStamp('expiryDate', expiryDate),
             },
           ])}
         />
