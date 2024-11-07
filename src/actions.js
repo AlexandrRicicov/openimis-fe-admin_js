@@ -197,7 +197,7 @@ export function voucherAssignmentValidation(phCode, workers, dateRanges) {
     }
     `,
     { phCode, workers: workersNationalIDs, dateRanges },
-  );
+  ); 
 }
 
 export function assignVouchers(phCode, workers, dateRanges, clientMutationLabel) {
