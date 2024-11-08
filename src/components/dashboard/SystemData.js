@@ -1,94 +1,112 @@
 import React from 'react';
 
-import { Typography, CircularProgress } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
-import { useTranslations } from '@openimis/fe-core';
+import { useModulesManager, useTranslations } from '@openimis/fe-core';
 import { MODULE_NAME } from '../../constants';
+import FetchingCategory from './FetchingCategory';
 
-const useStyles = makeStyles(() => ({
-  dataTitle: {
-    fontSize: '24px',
-    fontWeight: '600',
-    lineHeight: '29px',
-    marginBottom: '12px',
-  },
-  dataSubtitle: {
-    fontSize: '18px',
-    fontWeight: '500',
-    lineHeight: '22px',
-  },
-  dataCount: {
-    fontSize: '48px',
-    fontWeight: '600',
-    lineHeight: '58px',
-  },
-  workerDataContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '128px',
-  },
-  voucherDataContainer: {
+const useStyles = makeStyles((theme) => ({
+  wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '24px',
+    justifyContent: 'start',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    gap: theme.spacing(3),
   },
-  paymentDataContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
+  subcategoriesWrapper: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: theme.spacing(2),
+    width: '100%',
   },
-  withSubtitleContainer: {
+  categoryWrapper: {
     display: 'flex',
-    flexDirection: 'row',
-    gap: '64px',
+    justifyContent: 'start',
+    alignItems: 'center',
+    width: '100%',
   },
 }));
 
-function SystemData({ systemData, isLoading }) {
+function SystemData({
+  parentClasses, systemData, isLoading, children,
+}) {
   const classes = useStyles();
-  const { formatMessage } = useTranslations(MODULE_NAME);
-
-  if (isLoading) {
-    return <CircularProgress />;
-  }
+  const modulesManager = useModulesManager();
+  const { formatMessage } = useTranslations(MODULE_NAME, modulesManager);
 
   const { worker, voucher, payment } = systemData;
 
   return (
     <>
-      <div className={classes.workerDataContainer}>
-        {Object.entries(worker).map(([key, value]) => (
-          <div key={key}>
-            <Typography className={classes.dataTitle}>{formatMessage(`SystemData.worker.${key}`)}</Typography>
-            <Typography className={classes.dataCount}>{value}</Typography>
-          </div>
-        ))}
-      </div>
-      <div className={classes.voucherDataContainer}>
-        <div>
-          <Typography className={classes.dataTitle}>{formatMessage('SystemData.voucher.title')}</Typography>
-          <div className={classes.withSubtitleContainer}>
-            {Object.entries(voucher).map(([key, value]) => (
-              <div key={key}>
-                <Typography className={classes.dataSubtitle}>{formatMessage(`SystemData.voucher.${key}`)}</Typography>
-                <Typography className={classes.dataCount}>{value}</Typography>
+      <div className={`${parentClasses.grid} ${parentClasses.threeColumnGrid}`}>
+        <div className={parentClasses.card}>
+          <FetchingCategory isLoading={isLoading}>
+            <div className={classes.wrapper}>
+              <Typography className={parentClasses.cardTitle}>
+                {formatMessage('SystemData.worker.totalNumber')}
+              </Typography>
+              <div className={classes.categoryWrapper}>
+                <Typography className={parentClasses.cardCount}>{worker.totalNumber}</Typography>
               </div>
-            ))}
+            </div>
+          </FetchingCategory>
+        </div>
+        <div className={parentClasses.card}>
+          <FetchingCategory isLoading={isLoading}>
+            <div className={classes.wrapper}>
+              <Typography className={parentClasses.cardTitle}>
+                {formatMessage('SystemData.worker.activeNumber')}
+              </Typography>
+              <div className={classes.categoryWrapper}>
+                <Typography className={parentClasses.cardCount}>{worker.activeNumber}</Typography>
+              </div>
+            </div>
+          </FetchingCategory>
+        </div>
+        <div className={parentClasses.card}>
+          <div className={classes.wrapper}>
+            {children}
           </div>
         </div>
       </div>
-      <div className={classes.paymentDataContainer}>
-        <div>
-          <Typography className={classes.dataTitle}>{formatMessage('SystemData.payment.title')}</Typography>
-          <div className={classes.withSubtitleContainer}>
-            {Object.entries(payment).map(([key, value]) => (
-              <div key={key}>
-                <Typography className={classes.dataSubtitle}>{formatMessage(`SystemData.payment.${key}`)}</Typography>
-                <Typography className={classes.dataCount}>{value}</Typography>
+      <div className={`${parentClasses.grid} ${parentClasses.twoColumnGrid}`}>
+        <div className={parentClasses.card}>
+          <FetchingCategory isLoading={isLoading}>
+            <div className={classes.wrapper}>
+              <Typography className={parentClasses.cardTitle}>{formatMessage('SystemData.voucher.title')}</Typography>
+              <div className={classes.subcategoriesWrapper}>
+                {Object.entries(voucher).map(([key, value]) => (
+                  <div key={key}>
+                    <Typography className={parentClasses.cardSubtitle}>
+                      {formatMessage(`SystemData.voucher.${key}`)}
+                    </Typography>
+                    <Typography className={parentClasses.cardCountSecondary}>{value}</Typography>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          </FetchingCategory>
+        </div>
+        <div className={parentClasses.card}>
+          <FetchingCategory isLoading={isLoading}>
+            <div className={classes.wrapper}>
+              <Typography className={parentClasses.cardTitle}>{formatMessage('SystemData.payment.title')}</Typography>
+              <div className={classes.subcategoriesWrapper}>
+                {Object.entries(payment).map(([key, value]) => (
+                  <div key={key}>
+                    <Typography className={parentClasses.cardSubtitle}>
+                      {formatMessage(`SystemData.payment.${key}`)}
+                    </Typography>
+                    <Typography className={parentClasses.cardCountSecondary}>{value}</Typography>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FetchingCategory>
         </div>
       </div>
     </>

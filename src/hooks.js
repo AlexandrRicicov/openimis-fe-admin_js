@@ -5,9 +5,11 @@ import _ from 'lodash';
 
 import { fetchSystemData } from './actions';
 
-export const useSystemData = (economicUnit) => {
+export const useSystemData = (economicUnit, startDate, endDate) => {
   const dispatch = useDispatch();
   const prevEconomicUnitRef = useRef();
+  const prevStartDateRef = useRef();
+  const prevEndDateRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [systemData, setSystemData] = useState({
     worker: { totalNumber: 0, activeNumber: 0 },
@@ -25,7 +27,10 @@ export const useSystemData = (economicUnit) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await dispatch(fetchSystemData(economicUnit));
+        const startDateISO = `${startDate}T00:00:00Z`;
+        const endDateISO = `${endDate}T23:59:59Z`;
+
+        const response = await dispatch(fetchSystemData(economicUnit, startDateISO, endDateISO));
         const payload = response.payload.data;
 
         setSystemData({
@@ -53,11 +58,18 @@ export const useSystemData = (economicUnit) => {
       }
     };
 
-    if (!_.isEqual(economicUnit, prevEconomicUnitRef.current)) {
+    if (
+      !_.isEqual(economicUnit, prevEconomicUnitRef.current)
+      || startDate !== prevStartDateRef.current
+      || endDate !== prevEndDateRef.current
+    ) {
       fetchData();
+
       prevEconomicUnitRef.current = economicUnit;
+      prevStartDateRef.current = startDate;
+      prevEndDateRef.current = endDate;
     }
-  }, [economicUnit, dispatch]);
+  }, [economicUnit, dispatch, startDate, endDate]);
 
   return { systemData, isLoading };
 };
