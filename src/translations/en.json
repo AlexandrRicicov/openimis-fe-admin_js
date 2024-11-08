@@ -250,5 +250,6 @@
   "workerVoucher.VoucherGenericPrintModal.title": "Print Non-Personal Voucher",
   "workerVoucher.VoucherGenericPrintModal.description": "You are about to print a non-personal voucher. After printing, the voucher will be marked as PRINTED, making it unusable within the system. This action is permanent and cannot be undone.",
   "workerVoucher.VoucherGenericPrintModal.checkbox": "I confirm I want to print the non-personal voucher and I understand its consequences.",
-  "workerVoucher.VoucherGenericPrintModal.confirm": "Proceed"
+  "workerVoucher.VoucherGenericPrintModal.confirm": "Proceed",
+  "workerVoucher.AdminAndInspectorDashboard.title": "Hello, {user}!"
 }
