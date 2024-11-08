@@ -41,7 +41,11 @@ import { getLastMutationLog } from '../utils/utils';
 const WORKER_SEARCHER_ACTION_CONTRIBUTION_KEY = 'workerVoucher.WorkerSearcherAction.select';
 
 function WorkerSearcher({
-  downloadWorkers, fetchWorkers: fetchWorkersAction, clearWorkersExport, searcherActions = [], enableActionButtons,
+  downloadWorkers,
+  fetchWorkers: fetchWorkersAction,
+  clearWorkersExport,
+  searcherActions = [],
+  enableActionButtons,
 }) {
   const history = useHistory();
   const modulesManager = useModulesManager();
@@ -280,7 +284,7 @@ function WorkerSearcher({
         headers={headers}
         itemFormatters={itemFormatters}
         sorts={sorts}
-        rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+        rowsPerPageOptions={[...ROWS_PER_PAGE_OPTIONS, 250, 500]}
         defaultPageSize={DEFAULT_PAGE_SIZE}
         rowIdentifier={rowIdentifier}
         onDoubleClick={onDoubleClick}
