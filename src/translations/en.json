@@ -61,7 +61,7 @@
   "workerVoucher.acquirement.method.GENERIC_VOUCHER": "Non-Personal Voucher",
   "workerVoucher.acquirement.method.SPECIFIC_WORKER": "Personal Voucher",
   "workerVoucher.validation.start_date_in_past": "The start date {start_date} is in the past",
-  "workerVoucher.validation.existing_active_vouchers": "One or more workers have assigned vouchers in specified ranges",
+  "workerVoucher.validation.existing_active_vouchers": "One or more workers have assigned vouchers in the specified validity period",
   "workerVoucher.validation.start_date_after_end_date": "Start date {start_date} is after end date {end_date}",
   "workerVoucher.validation.date_in_more_than_one_range": "Date {date} in more than one range",
   "workerVoucher.validation.date_after_voucher_expiry_date": "Date {date} after voucher expiry date",
