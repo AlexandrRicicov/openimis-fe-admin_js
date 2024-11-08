@@ -47,8 +47,10 @@ function VoucherAssignmentConfirmModal({
       return (
         <Typography color="error">
           {assignmentSummary.errors
-            .map(({ message, extensions }, index) =>
-              `${index + 1}. ${formatValidationError(message, extensions, formatMessage, formatMessageWithValues)}`
+            .map(
+              ({ message, extensions }, index) =>
+                // eslint-disable-next-line implicit-arrow-linebreak
+                `${index + 1}. ${formatValidationError(message, extensions, formatMessage, formatMessageWithValues)}`,
             )
             .join('\n')}
         </Typography>

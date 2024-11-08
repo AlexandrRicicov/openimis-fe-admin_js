@@ -47,9 +47,11 @@ function VoucherAcquirementPaymentModal({
     if (acquirementSummary?.errors) {
       return (
         <Typography color="error">
-          {acquirementSummary?.errors?.map((
-            { message, extensions }, index
-          ) => `${index + 1}. ${formatValidationError(message, extensions, formatMessage, formatMessageWithValues)}.`)}
+          {acquirementSummary?.errors?.map(
+            ({ message, extensions }, index) =>
+              // eslint-disable-next-line implicit-arrow-linebreak
+              `${index + 1}. ${formatValidationError(message, extensions, formatMessage, formatMessageWithValues)}.`,
+          )}
         </Typography>
       );
     }

@@ -19,6 +19,7 @@ export const useSystemData = (economicUnit, startDate, endDate) => {
       assigned: 0,
       expired: 0,
       cancelled: 0,
+      printed: 0,
     },
     payment: { paid: 0, unpaid: 0 },
   });
@@ -44,6 +45,7 @@ export const useSystemData = (economicUnit, startDate, endDate) => {
             assigned: payload.assigned.totalCount,
             expired: payload.expired.totalCount,
             cancelled: payload.cancelled.totalCount,
+            printed: payload.printed.totalCount,
           },
           payment: {
             paid: payload.paid.totalCount,
