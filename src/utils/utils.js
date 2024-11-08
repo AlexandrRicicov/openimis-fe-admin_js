@@ -82,6 +82,6 @@ export const trimDate = (date) => {
 
 export function formatValidationError(message, extensions, formatMessage, formatMessageWithValues) {
   return extensions
-      ? formatMessageWithValues(message, extensions)
-      : formatMessage(message);
+    ? formatMessageWithValues(message, extensions)
+    : formatMessage(message);
 }

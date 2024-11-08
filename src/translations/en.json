@@ -240,6 +240,7 @@
   "workerVoucher.SystemData.voucher.assigned": "Assigned",
   "workerVoucher.SystemData.voucher.expired": "Expired",
   "workerVoucher.SystemData.voucher.cancelled": "Cancelled",
+  "workerVoucher.SystemData.voucher.printed": "Printed",
   "workerVoucher.SystemData.payment.title": "Payments",
   "workerVoucher.SystemData.payment.paid": "Paid",
   "workerVoucher.SystemData.payment.unpaid": "Unpaid",

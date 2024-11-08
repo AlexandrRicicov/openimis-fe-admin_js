@@ -766,6 +766,14 @@ export function fetchSystemData(economicUnit, startDate, endDate) {
         ) {
           totalCount
         }
+        printed: workerVoucher(
+          policyholder_Code: $economicUnitCode
+          status: PRINTED
+          dateCreated_Gte: $startDate
+          dateCreated_Lte: $endDate
+        ) {
+          totalCount
+        }
         paid: bill(
           subjectId: $economicUnitUuid
           status: A_2
