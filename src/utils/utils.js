@@ -79,3 +79,9 @@ export const trimDate = (date) => {
 
   return date.split('T')?.[0] ?? date;
 };
+
+export function formatValidationError(message, extensions, formatMessage, formatMessageWithValues) {
+  return extensions
+      ? formatMessageWithValues(message, extensions)
+      : formatMessage(message);
+}

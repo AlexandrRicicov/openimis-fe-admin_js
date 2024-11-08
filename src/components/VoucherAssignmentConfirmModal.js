@@ -20,18 +20,13 @@ import {
   useTranslations, useModulesManager, NumberInput, AmountInput,
 } from '@openimis/fe-core';
 import { MODULE_NAME } from '../constants';
+import { formatValidationError } from '../utils/utils';
 
 export const useStyles = makeStyles((theme) => ({
   primaryButton: { ...theme.dialog.primaryButton, padding: '6px 12px' },
   secondaryButton: theme.dialog.secondaryButton,
   item: theme.paper.item,
 }));
-
-function parseAndFormatMessage(message, extensions, formatMessage, formatMessageWithValues) {
-  return extensions
-      ? formatMessageWithValues(message, extensions)
-      : formatMessage(message);
-}
 
 function VoucherAssignmentConfirmModal({
   openState,
@@ -51,11 +46,11 @@ function VoucherAssignmentConfirmModal({
     if (assignmentSummary?.errors) {
       return (
         <Typography color="error">
-          {assignmentSummary.errors.map(({ message, extensions }, index) => (
-            <div key={index}>
-              {`${index + 1}. ${parseAndFormatMessage(message, extensions, formatMessage, formatMessageWithValues)}`}
-            </div>
-          ))}
+          {assignmentSummary.errors
+            .map(({ message, extensions }, index) =>
+              `${index + 1}. ${formatValidationError(message, extensions, formatMessage, formatMessageWithValues)}`
+            )
+            .join('\n')}
         </Typography>
       );
     }
