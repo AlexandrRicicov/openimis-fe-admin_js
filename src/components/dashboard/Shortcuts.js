@@ -75,12 +75,10 @@ function Shortcut({ link, content, icon: Icon }) {
   };
 
   return (
-    <div className={classes.shortcut} onClick={onClick}>
+    <button type="button" className={classes.shortcut} onClick={onClick}>
       <Icon />
-      <Typography>
-        {formatMessage(content)}
-      </Typography>
-    </div>
+      <Typography>{formatMessage(content)}</Typography>
+    </button>
   );
 }
 
