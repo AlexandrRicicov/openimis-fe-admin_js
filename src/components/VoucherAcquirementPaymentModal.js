@@ -20,6 +20,7 @@ import {
   useTranslations, useModulesManager, AmountInput, NumberInput,
 } from '@openimis/fe-core';
 import { MODULE_NAME } from '../constants';
+import { formatValidationError } from '../utils/utils';
 
 export const useStyles = makeStyles((theme) => ({
   primaryButton: { ...theme.dialog.primaryButton, padding: '6px 12px' },
@@ -38,7 +39,7 @@ function VoucherAcquirementPaymentModal({
 }) {
   const classes = useStyles();
   const modulesManager = useModulesManager();
-  const { formatMessage } = useTranslations(MODULE_NAME, modulesManager);
+  const { formatMessage, formatMessageWithValues } = useTranslations(MODULE_NAME, modulesManager);
   const [acceptAcquirement, setAcceptAcquirement] = useState(false);
   const acquireButtonDisabled = !acceptAcquirement || isLoading || acquirementSummary?.errors;
 
@@ -46,7 +47,9 @@ function VoucherAcquirementPaymentModal({
     if (acquirementSummary?.errors) {
       return (
         <Typography color="error">
-          {acquirementSummary?.errors?.map(({ message }, index) => `${index + 1}. ${message}.`)}
+          {acquirementSummary?.errors?.map((
+            { message, extensions }, index
+          ) => `${index + 1}. ${formatValidationError(message, extensions, formatMessage, formatMessageWithValues)}.`)}
         </Typography>
       );
     }
