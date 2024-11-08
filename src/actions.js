@@ -709,52 +709,87 @@ export function deleteVoucherDraftForm(economicUnit, clientMutationLabel, typeOf
   );
 }
 
-export function fetchSystemData(economicUnit) {
+export function fetchSystemData(economicUnit, startDate, endDate) {
   const query = `
-    query fetchSystemData($economicUnitCode: String!, $economicUnitUuid: String!) {
-      totalNumber: worker(economicUnitCode: $economicUnitCode) {
-        totalCount
-      }
-      activeNumber: workerVoucher(
-        policyholder_Code: $economicUnitCode
-        status: ASSIGNED
-        assignedDate_Gte: "2024-11-04T00:00:00"
+    query fetchSystemData($economicUnitCode: String!,
+      $economicUnitUuid: String!,
+      $startDate: DateTime!,
+      $endDate: DateTime!
       ) {
-        totalCount
-      }
-      pending: workerVoucher(
-        policyholder_Code: $economicUnitCode
-        status: AWAITING_PAYMENT
-      ) {
-        totalCount
-      }
-      unassigned: workerVoucher(
-        policyholder_Code: $economicUnitCode
-        status: UNASSIGNED
-      ) {
-        totalCount
-      }
-      assigned: workerVoucher(policyholder_Code: $economicUnitCode, status: ASSIGNED) {
-        totalCount
-      }
-      expired: workerVoucher(policyholder_Code: $economicUnitCode, status: EXPIRED) {
-        totalCount
-      }
-      cancelled: workerVoucher(policyholder_Code: $economicUnitCode, status: CANCELED) {
-        totalCount
-      }
-      paid: bill(subjectId: $economicUnitUuid, status: A_2) {
-        totalCount
-      }
-      unpaid: bill(subjectId: $economicUnitUuid, status: A_1) {
-        totalCount
-      }
+        totalNumber: worker(economicUnitCode: $economicUnitCode) {
+          totalCount
+        }
+        activeNumber: workerVoucher(
+          policyholder_Code: $economicUnitCode
+          status: ASSIGNED
+          assignedDate_Gte: "2024-11-04T00:00:00"
+        ) {
+          totalCount
+        }
+        pending: workerVoucher(
+          policyholder_Code: $economicUnitCode
+          status: AWAITING_PAYMENT
+          dateCreated_Gte: $startDate
+          dateCreated_Lte: $endDate
+        ) {
+          totalCount
+        }
+        unassigned: workerVoucher(
+          policyholder_Code: $economicUnitCode
+          status: UNASSIGNED
+          dateCreated_Gte: $startDate
+          dateCreated_Lte: $endDate
+        ) {
+          totalCount
+        }
+        assigned: workerVoucher(
+          policyholder_Code: $economicUnitCode
+          status: ASSIGNED
+          dateCreated_Gte: $startDate
+          dateCreated_Lte: $endDate
+        ) {
+          totalCount
+        }
+        expired: workerVoucher(
+          policyholder_Code: $economicUnitCode
+          status: EXPIRED
+          dateCreated_Gte: $startDate
+          dateCreated_Lte: $endDate
+        ) {
+          totalCount
+        }
+        cancelled: workerVoucher(
+          policyholder_Code: $economicUnitCode
+          status: CANCELED
+          dateCreated_Gte: $startDate
+          dateCreated_Lte: $endDate
+        ) {
+          totalCount
+        }
+        paid: bill(
+          subjectId: $economicUnitUuid
+          status: A_2
+          dateCreated_Gte: $startDate
+          dateCreated_Lte: $endDate
+        ) {
+          totalCount
+        }
+        unpaid: bill(
+          subjectId: $economicUnitUuid
+          status: A_1
+          dateCreated_Gte: $startDate
+          dateCreated_Lte: $endDate
+        ) {
+          totalCount
+        }
     }
   `;
 
   return graphqlWithVariables(query, {
     economicUnitCode: economicUnit.code,
     economicUnitUuid: decodeId(economicUnit.id),
+    startDate,
+    endDate,
   });
 }
 

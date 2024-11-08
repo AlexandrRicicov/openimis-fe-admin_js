@@ -38,7 +38,7 @@ function AssignmentVoucherForm({
           <TextInput
             module="workerVoucher"
             label="workerVoucher.employer.tradename"
-            value={edited?.employer?.code ?? formatMessage('workerVoucher.WorkerDateRangePicker.notAvailable')}
+            value={edited?.employer?.tradeName ?? formatMessage('workerVoucher.WorkerDateRangePicker.notAvailable')}
             readOnly
           />
         </Grid>
