@@ -249,7 +249,7 @@ function WorkerSearcher({
 
         showError(
           formatMessageWithValues('deleteWorker.error', {
-            detail: parsedMutationError[0]?.detail || EMPTY_STRING,
+            detail: formatMessage(parsedMutationError[0]?.detail) || EMPTY_STRING,
           }),
         );
         return;
