@@ -7,14 +7,15 @@ import {
 } from '@material-ui/core';
 import PrintIcon from '@material-ui/icons/Print';
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { makeStyles } from '@material-ui/styles';
 
 import {
-  FormattedMessage, historyPush, useHistory, useModulesManager,
+  FormattedMessage, historyPush, useHistory, useModulesManager, SelectDialog,
 } from '@openimis/fe-core';
-import { changeGenericVoucherStatusAfterPrint, fetchWorkerVoucher } from '../actions';
+import { changeGenericVoucherStatusAfterPrint, fetchWorkerVoucher, cancelVoucher } from '../actions';
 import {
-  PRINTABLE, REF_ROUTE_BILL, VOUCHER_RIGHT_SEARCH, WORKER_VOUCHER_STATUS,
+  PRINTABLE, CANCELABLE, REF_ROUTE_BILL, VOUCHER_RIGHT_SEARCH, WORKER_VOUCHER_STATUS,
 } from '../constants';
 import { isTheVoucherExpired } from '../utils/utils';
 import VoucherDetailsEmployer from './VoucherDetailsEmployer';
@@ -46,6 +47,7 @@ function VoucherDetailsPanel({
   const classes = useStyles();
   const isAssignedStatus = workerVoucher.status === WORKER_VOUCHER_STATUS.ASSIGNED;
   const [isPrintConfirmationModalOpen, setIsPrintConfirmationModalOpen] = useState(false);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
 
   const handlePrint = useReactToPrint({
     documentTitle: `${workerVoucher.code}`,
@@ -56,6 +58,21 @@ function VoucherDetailsPanel({
   const openPrintConfirmationModal = () => setIsPrintConfirmationModalOpen(true);
 
   const closePrintConfirmationModal = () => setIsPrintConfirmationModalOpen(false);
+
+  const openCancelDialog = () => setIsCancelDialogOpen(true);
+
+  const closeCancelDialog = () => setIsCancelDialogOpen(false);
+
+  const onCancelVoucherConfirm = async () => {
+    try {
+      await dispatch(cancelVoucher(workerVoucher, 'Cancel Voucher'));
+      dispatch(fetchWorkerVoucher(modulesManager, [`id: "${workerVoucher.uuid}"`]));
+    } catch (error) {
+      console.error('Cancel voucher failed:', error);
+    } finally {
+      setIsCancelDialogOpen(false);
+    }
+  };
 
   const onGenericVoucherPrint = () => {
     dispatch(changeGenericVoucherStatusAfterPrint(workerVoucher, 'Change Status After Print')).then(() => {
@@ -82,6 +99,17 @@ function VoucherDetailsPanel({
           </Grid>
           {rights.includes(VOUCHER_RIGHT_SEARCH) && (
             <Grid item className={classes.actionButtons}>
+              {CANCELABLE.includes(workerVoucher.status) && (
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  startIcon={<CancelIcon />}
+                  onClick={openCancelDialog}
+                >
+                  <Typography variant="body2">{formatMessage('workerVoucher.navigateToTheBill.cancelVoucher')}</Typography>
+                </Button>
+              )}
               {PRINTABLE.includes(workerVoucher.status) && (
                 <Button
                   size="small"
@@ -131,6 +159,16 @@ function VoucherDetailsPanel({
         open={isPrintConfirmationModalOpen}
         onClose={closePrintConfirmationModal}
         onConfirm={onGenericVoucherPrint}
+      />
+      <SelectDialog
+        confirmState={isCancelDialogOpen}
+        onConfirm={onCancelVoucherConfirm}
+        onClose={closeCancelDialog}
+        module="workerVoucher"
+        confirmTitle="VoucherDetailsPanel.cancelDialog.title"
+        confirmMessage="VoucherDetailsPanel.cancelDialog.message"
+        confirmationButton="VoucherDetailsPanel.cancelDialog.confirm"
+        rejectionButton="VoucherDetailsPanel.cancelDialog.cancel"
       />
       <div style={{ display: 'none' }}>
         <VoucherDetailsPrintTemplate

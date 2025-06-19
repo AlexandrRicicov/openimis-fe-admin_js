@@ -139,6 +139,7 @@
   "workerVoucher.filter.date": "Date",
   "business_config.validation.date_range_overlap": "Unable to create the voucher price for the specified period. There is an existing voucher price defined within the selected date range.",
   "workerVoucher.navigateToTheBill.tooltip": "Bill",
+  "workerVoucher.navigateToTheBill.cancelVoucher": "Cancel voucher",
   "workerVoucher.MPayBillButton": "Pay with MPay",
   "workerVoucher.workerImport.title": "Add workers",
   "workerVoucher.workerImport.allWorkers": "Add all workers",
@@ -251,5 +252,9 @@
   "workerVoucher.VoucherGenericPrintModal.description": "You are about to print a non-personal voucher. After printing, the voucher will be marked as PRINTED, making it unusable within the system. This action is permanent and cannot be undone.",
   "workerVoucher.VoucherGenericPrintModal.checkbox": "I confirm I want to print the non-personal voucher and I understand its consequences.",
   "workerVoucher.VoucherGenericPrintModal.confirm": "Proceed",
-  "workerVoucher.AdminAndInspectorDashboard.title": "Hello, {user}!"
+  "workerVoucher.AdminAndInspectorDashboard.title": "Hello, {user}!",
+  "workerVoucher.VoucherDetailsPanel.cancelDialog.title": "Cancel Voucher",
+  "workerVoucher.VoucherDetailsPanel.cancelDialog.message": "Are you sure you want to cancel this voucher? This action cannot be undone.",
+  "workerVoucher.VoucherDetailsPanel.cancelDialog.confirm": "Cancel Voucher",
+  "workerVoucher.VoucherDetailsPanel.cancelDialog.cancel": "Close"
 }

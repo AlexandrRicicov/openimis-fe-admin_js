@@ -64,8 +64,7 @@ export const GROUP_PROJECTION = (modulesManager, withWorkers = true) => [
   `policyholder ${modulesManager.getProjection('policyHolder.PolicyHolderPicker.projection')}`,
   `groupWorkers {
     totalCount
-    ${
-  withWorkers
+    ${withWorkers
     ? `edges {
       node {
         isDeleted,
@@ -73,7 +72,7 @@ export const GROUP_PROJECTION = (modulesManager, withWorkers = true) => [
       }
     }`
     : ''
-}
+  }
   }`,
 ];
 
@@ -822,6 +821,27 @@ export function changeGenericVoucherStatusAfterPrint(workerVoucher, clientMutati
     [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.CHANGE_VOUCHER_STATUS_TO_PRINTED), ERROR(ACTION_TYPE.MUTATION)],
     {
       actionType: ACTION_TYPE.CHANGE_VOUCHER_STATUS_TO_PRINTED,
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    },
+  );
+}
+
+export function cancelVoucher(workerVoucher, clientMutationLabel) {
+  const mutationInput = `
+    economicUnitCode: "${workerVoucher.policyholder?.code}"
+    ids: ["${workerVoucher.uuid}"]
+  `;
+
+  const mutation = formatMutation('unassignVouchers', mutationInput, clientMutationLabel);
+  const requestedDateTime = new Date();
+
+  return graphql(
+    mutation.payload,
+    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.CANCEL_VOUCHER), ERROR(ACTION_TYPE.MUTATION)],
+    {
+      actionType: ACTION_TYPE.CANCEL_VOUCHER,
       clientMutationId: mutation.clientMutationId,
       clientMutationLabel,
       requestedDateTime,
