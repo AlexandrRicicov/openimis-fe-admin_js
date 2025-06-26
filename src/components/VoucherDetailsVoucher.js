@@ -2,27 +2,27 @@ import React from 'react';
 
 import { Grid, Divider } from '@material-ui/core';
 
-import { PublishedComponent, TextInput } from '@openimis/fe-core';
+import { PublishedComponent, TextInput, NumberInput } from '@openimis/fe-core';
 import WorkerVoucherStatusPicker from '../pickers/WorkerVoucherStatusPicker';
 import VoucherQRCode from './VoucherQRCode';
 import { trimDate } from '../utils/utils';
 
 function VoucherDetailsVoucher({
-  workerVoucher, classes, readOnly, formatMessage, formatDateTimeFromISO,
+  workerVoucher, edited, onEditedChanged, classes, formatMessage, formatDateTimeFromISO,
 }) {
   return (
     <>
       <Grid container style={{ marginTop: '12px' }}>
-        <Grid xs={3}>
+        <Grid item xs={3}>
           <VoucherQRCode voucher={workerVoucher} />
         </Grid>
-        <Grid container xs={9}>
+        <Grid item container xs={9}>
           <Grid item xs={4} className={classes.item}>
             <TextInput
               module="workerVoucher"
               label="workerVoucher.code"
               value={workerVoucher?.code}
-              readOnly={readOnly}
+              readOnly
             />
           </Grid>
           <Grid item xs={4} className={classes.item}>
@@ -30,7 +30,7 @@ function VoucherDetailsVoucher({
               nullLabel={formatMessage('workerVoucher.placeholder.any')}
               withLabel
               value={workerVoucher?.status}
-              readOnly={readOnly}
+              readOnly
             />
           </Grid>
           <Grid item xs={4} className={classes.item}>
@@ -39,7 +39,7 @@ function VoucherDetailsVoucher({
               module="workerVoucher"
               label="workerVoucher.assignedDate"
               value={trimDate(workerVoucher?.assignedDate)}
-              readOnly={readOnly}
+              readOnly
             />
           </Grid>
           <Grid item xs={4} className={classes.item}>
@@ -48,7 +48,7 @@ function VoucherDetailsVoucher({
               module="workerVoucher"
               label="workerVoucher.dateOfAssignment"
               value={formatDateTimeFromISO(workerVoucher?.dateOfAssignment)}
-              readOnly={readOnly}
+              readOnly
               format="YYYY-MM-DD HH:mm:ss"
             />
           </Grid>
@@ -58,7 +58,7 @@ function VoucherDetailsVoucher({
               module="workerVoucher"
               label="workerVoucher.createdDate"
               value={formatDateTimeFromISO(workerVoucher?.dateCreated)}
-              readOnly={readOnly}
+              readOnly
               format="YYYY-MM-DD HH:mm:ss"
             />
           </Grid>
@@ -68,7 +68,61 @@ function VoucherDetailsVoucher({
               module="workerVoucher"
               label="workerVoucher.expiryDate"
               value={trimDate(workerVoucher?.expiryDate)}
-              readOnly={readOnly}
+              readOnly
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <TextInput
+              type="time"
+              module="workerVoucher"
+              label="workerVoucher.startTime"
+              value={workerVoucher?.startTime || ''}
+              readOnly
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <TextInput
+              module="workerVoucher"
+              label="workerVoucher.workPlace"
+              value={workerVoucher?.workPlace || ''}
+              readOnly
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <TextInput
+              module="workerVoucher"
+              label="workerVoucher.activity"
+              value={workerVoucher?.activity || ''}
+              readOnly
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <TextInput
+              module="workerVoucher"
+              label="workerVoucher.negotiated"
+              value={workerVoucher?.negotiated || ''}
+              readOnly
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <TextInput
+              module="workerVoucher"
+              label="workerVoucher.endTime"
+              value={edited?.endTime || workerVoucher?.endTime || ''}
+              onChange={(endTime) => onEditedChanged({ ...edited, endTime })}
+              readOnly={false}
+              type="time"
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <NumberInput
+              module="workerVoucher"
+              label="workerVoucher.paid"
+              value={edited?.paid || workerVoucher?.paid || ''}
+              onChange={(paid) => onEditedChanged({ ...edited, paid })}
+              readOnly={false}
+              min={0}
+              displayZero
             />
           </Grid>
         </Grid>

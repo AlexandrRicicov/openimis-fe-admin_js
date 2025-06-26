@@ -42,6 +42,7 @@ export const ACTION_TYPE = {
   DELETE_ASSIGNMENT_DRAFT: 'WORKER_VOUCHER_DELETE_ASSIGNMENT_DRAFT',
   CHANGE_VOUCHER_STATUS_TO_PRINTED: 'WORKER_VOUCHER_CHANGE_VOUCHER_STATUS_TO_PRINTED',
   CANCEL_VOUCHER: 'WORKER_VOUCHER_CANCEL_VOUCHER',
+  UPDATE_WORKER_VOUCHER: 'WORKER_VOUCHER_UPDATE_WORKER_VOUCHER',
 };
 
 const STORE_STATE = {
@@ -413,6 +414,8 @@ function reducer(state = STORE_STATE, action) {
       return dispatchMutationResp(state, 'createBusinessConfig', action);
     case SUCCESS(ACTION_TYPE.DELETE_VOUCHER_PRICE):
       return dispatchMutationResp(state, 'deleteBusinessConfig', action);
+    case SUCCESS(ACTION_TYPE.UPDATE_WORKER_VOUCHER):
+      return dispatchMutationResp(state, 'updateWorkerVoucher', action);
     default:
       return state;
   }

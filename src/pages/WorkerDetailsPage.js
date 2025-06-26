@@ -94,14 +94,16 @@ function WorkerDetailsPage({ match }) {
       const mutationLog = await getLastMutationLog(dispatch, mutation?.clientMutationId || EMPTY_STRING);
 
       if (mutationLog?.error) {
-        showError(formatMessageWithValues('saveWorker.error'));
+        const errorKey = workerUuid ? 'saveWorker.error' : 'addWorker.error';
+        showError(formatMessage(errorKey));
         setReset((prevReset) => prevReset + 1);
         return;
       }
 
-      showSuccess(formatMessage('saveWorker.success'));
+      const successKey = workerUuid ? 'saveWorker.success' : 'addWorker.success';
+      showSuccess(formatMessage(successKey));
     }
-  }, [submittingMutation, mutation]);
+  }, [submittingMutation, mutation, workerUuid]);
 
   useEffect(() => {
     prevSubmittingMutationRef.current = submittingMutation;

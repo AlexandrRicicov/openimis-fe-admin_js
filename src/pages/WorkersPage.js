@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux';
 import AddIcon from '@material-ui/icons/Add';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { makeStyles } from '@material-ui/styles';
+import { Button, Typography } from '@material-ui/core';
 
 import {
-  Helmet, historyPush, useHistory, useModulesManager, useTranslations,
+  Helmet, historyPush, useHistory, useModulesManager, useTranslations, useToast,
 } from '@openimis/fe-core';
 import WorkerSearcher from '../components/WorkerSearcher';
 import {
@@ -23,6 +24,16 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: theme.spacing(1),
   },
+  bottomActions: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    gap: theme.spacing(1),
+    marginTop: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+  },
+  actionButton: {
+    textTransform: 'none',
+  },
 }));
 
 function WorkersPage() {
@@ -31,9 +42,11 @@ function WorkersPage() {
   const history = useHistory();
   const classes = useStyles();
   const { formatMessage } = useTranslations(MODULE_NAME, modulesManager);
+  const { showInfo } = useToast();
   const rights = useSelector((state) => state.core?.user?.i_user?.rights ?? []);
 
   const onAddRedirect = () => {
+    showInfo(formatMessage('addWorker.redirecting'));
     historyPush(modulesManager, history, 'workerVoucher.route.worker');
   };
 
@@ -45,28 +58,42 @@ function WorkersPage() {
     setUploadOpen(false);
   };
 
-  const SEARCHER_ACTIONS = [
-    {
-      label: formatMessage('workerVoucher.WorkersPage.uploadAction'),
-      icon: <CloudUploadIcon />,
-      authorized: rights.includes(RIGHT_WORKER_UPLOAD),
-      onClick: onUploadOpen,
-    },
-    {
-      label: formatMessage('workerVoucher.WorkersPage.addAction'),
-      icon: <AddIcon />,
-      authorized: rights.includes(RIGHT_WORKER_ADD),
-      onClick: onAddRedirect,
-    },
-  ];
-
   return (
     rights.includes(RIGHT_WORKER_SEARCH) && (
       <UploadWorkerProvider>
         <UploadWorkerModal open={uploadOpen} onClose={onUploadClose} />
         <div className={classes.page}>
           <Helmet title={formatMessage('workerVoucher.menu.workersList')} />
-          <WorkerSearcher searcherActions={SEARCHER_ACTIONS} enableActionButtons />
+          <WorkerSearcher enableActionButtons={false} />
+
+          <div className={classes.bottomActions}>
+            {rights.includes(RIGHT_WORKER_UPLOAD) && (
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<CloudUploadIcon />}
+                onClick={onUploadOpen}
+                className={classes.actionButton}
+              >
+                <Typography variant="body2">
+                  {formatMessage('workerVoucher.WorkersPage.uploadAction')}
+                </Typography>
+              </Button>
+            )}
+            {rights.includes(RIGHT_WORKER_ADD) && (
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={onAddRedirect}
+                className={classes.actionButton}
+              >
+                <Typography variant="body2">
+                  {formatMessage('workerVoucher.WorkersPage.addAction')}
+                </Typography>
+              </Button>
+            )}
+          </div>
         </div>
       </UploadWorkerProvider>
     )

@@ -24,7 +24,7 @@ function AcquirementGenericVoucherForm({
         </Grid>
       </Grid>
       <Divider style={{ margin: '12px 0' }} />
-      <Grid container xs={12}>
+      <Grid item container xs={12}>
         <Grid item xs={3} className={classes.item}>
           <TextInput
             module="workerVoucher"

@@ -85,33 +85,38 @@ const DEFAULT_CONFIG = {
       icon: <People />,
       route: `/${ROUTE_WORKER_VOUCHER_WORKER_LIST}`,
       filter: (rights) => [RIGHT_WORKER_SEARCH].some((right) => rights.includes(right)),
+      id: 'worker.workersList',
     },
     {
       text: <FormattedMessage module="workerVoucher" id="menu.groupList" />,
       icon: <TransferWithinAStationIcon />,
       route: `/${ROUTE_GROUP_LIST}`,
       filter: (rights) => [RIGHT_GROUP_SEARCH].some((right) => rights.includes(right)),
+      id: 'worker.groupList',
     },
-    {
-      text: <FormattedMessage module="workerVoucher" id="menu.voucherAssignment" />,
-      icon: <GroupAddIcon />,
-      route: `/${ROUTE_WORKER_VOUCHER_ASSIGNMENT}`,
-      filter: (rights, config) => config.genericVoucherEnabled
-      && [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right))
-      && ![INSPECTOR_RIGHT, ADMIN_RIGHT].some((right) => rights.includes(right)),
-    },
+    // {
+    //   text: <FormattedMessage module="workerVoucher" id="menu.voucherAssignment" />,
+    //   icon: <GroupAddIcon />,
+    //   route: `/${ROUTE_WORKER_VOUCHER_ASSIGNMENT}`,
+    //   filter: (rights, config) => config.genericVoucherEnabled
+    //     && [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right))
+    //     && ![INSPECTOR_RIGHT, ADMIN_RIGHT].some((right) => rights.includes(right)),
+    //   id: 'worker.voucherAssignment',
+    // },
     {
       text: <FormattedMessage module="workerVoucher" id="menu.voucherList" />,
       icon: <ListAltIcon />,
       route: `/${ROUTE_WORKER_VOUCHERS_LIST}`,
       filter: (rights) => [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right)),
+      id: 'worker.voucherList',
     },
     {
-      text: <FormattedMessage module="workerVoucher" id="menu.voucherAcquirement" />,
+      text: <FormattedMessage module="workerVoucher" id="menu.voucherAssignment" />,
       icon: <LocalAtmIcon />,
       route: `/${ROUTE_WORKER_VOUCHER_ACQUIREMENT}`,
       filter: (rights) => [VOUCHER_RIGHT_SEARCH].some((right) => rights.includes(right))
         && ![INSPECTOR_RIGHT, ADMIN_RIGHT].some((right) => rights.includes(right)),
+      id: 'worker.voucherAcquirement',
     },
   ],
   'admin.voucher.MainMenu': [

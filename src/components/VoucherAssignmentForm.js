@@ -26,12 +26,12 @@ import VoucherAssignmentConfirmModal from './VoucherAssignmentConfirmModal';
 import VoucherAssignmentProgressTracker from './VoucherAssignmentProgressTracker';
 
 export const useStyles = makeStyles((theme) => ({
-  paper: { ...theme.paper.paper, margin: '10px 0 0 0' },
+  paper: { ...theme.paper.paper, margin: '10px 0 0 0', position: 'relative' },
   paperHeaderTitle: {
     ...theme.paper.title,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   tableTitle: theme.table.title,
   item: theme.paper.item,
@@ -46,6 +46,12 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'start',
     alignItems: 'center',
     gap: theme.spacing(1),
+  },
+  assignButton: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+    zIndex: 1000,
   },
 }));
 
@@ -64,7 +70,7 @@ function VoucherAssignmentForm() {
   const prevEconomicUnitRef = useRef();
 
   const assignmentBlocked = (voucherAssignment) => !voucherAssignment?.workers?.length
-  || !voucherAssignment?.dateRanges?.length;
+    || !voucherAssignment?.dateRanges?.length;
 
   const onVoucherAssign = async () => {
     setIsConfirmationModalOpen((prevState) => !prevState);
@@ -93,6 +99,7 @@ function VoucherAssignmentForm() {
           voucherAssignment?.employer?.code,
           voucherAssignment?.workers,
           voucherAssignment?.dateRanges,
+          voucherAssignment?.workersData,
           'Assign Vouchers',
         ),
       );
@@ -150,9 +157,9 @@ function VoucherAssignmentForm() {
 
   return (
     <Grid container>
-      <Grid xs={12}>
+      <Grid item xs={12}>
         <Paper className={classes.paper}>
-          <Grid xs={12}>
+          <Grid item xs={12}>
             <Grid container className={classes.paperHeaderTitle}>
               <div className={classes.infoSection}>
                 <InfoButton
@@ -162,25 +169,6 @@ function VoucherAssignmentForm() {
                 />
                 <Typography variant="h5">{formatMessage('workerVoucher.menu.voucherAssignment')}</Typography>
               </div>
-              <Tooltip
-                title={
-                  assignmentBlocked(voucherAssignment)
-                    ? formatMessage('workerVoucher.vouchers.required')
-                    : formatMessage('workerVoucher.assign.vouchers')
-                }
-              >
-                <span>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AssignmentIndIcon />}
-                    onClick={onVoucherAssign}
-                    disabled={assignmentBlocked(voucherAssignment)}
-                  >
-                    <Typography variant="body2">{formatMessage('workerVoucher.assign.voucher')}</Typography>
-                  </Button>
-                </span>
-              </Tooltip>
             </Grid>
           </Grid>
           <Divider />
@@ -192,6 +180,27 @@ function VoucherAssignmentForm() {
             formatMessage={formatMessage}
             classes={classes}
           />
+          <div className={classes.assignButton}>
+            <Tooltip
+              title={
+                assignmentBlocked(voucherAssignment)
+                  ? formatMessage('workerVoucher.vouchers.required')
+                  : formatMessage('workerVoucher.assign.vouchers')
+              }
+            >
+              <span>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AssignmentIndIcon />}
+                  onClick={onVoucherAssign}
+                  disabled={assignmentBlocked(voucherAssignment)}
+                >
+                  <Typography variant="body2">{formatMessage('workerVoucher.assign.voucher')}</Typography>
+                </Button>
+              </span>
+            </Tooltip>
+          </div>
           <VoucherAssignmentConfirmModal
             openState={isConfirmationModalOpen}
             onClose={() => setIsConfirmationModalOpen((prevState) => !prevState)}

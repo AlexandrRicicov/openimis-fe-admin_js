@@ -59,7 +59,7 @@ function VoucherAssignmentConfirmModal({
 
     return (
       <Grid container>
-        <Grid xs={4} className={classes.item}>
+        <Grid item xs={4} className={classes.item}>
           <NumberInput
             module="workerVoucher"
             label="workerVoucher.vouchersQuantity"
@@ -67,7 +67,7 @@ function VoucherAssignmentConfirmModal({
             readOnly={readOnly}
           />
         </Grid>
-        <Grid xs={4} className={classes.item}>
+        <Grid item xs={4} className={classes.item}>
           <AmountInput
             module="workerVoucher"
             label="workerVoucher.pricePerVoucher"
@@ -76,7 +76,7 @@ function VoucherAssignmentConfirmModal({
             displayZero
           />
         </Grid>
-        <Grid xs={4} className={classes.item}>
+        <Grid item xs={4} className={classes.item}>
           <AmountInput
             module="workerVoucher"
             label="workerVoucher.toBePaid"

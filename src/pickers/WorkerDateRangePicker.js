@@ -51,7 +51,7 @@ function WorkerDateRangePicker({
 
   return (
     <Grid container>
-      <Grid xs={5}>
+      <Grid item xs={5}>
         <div
           style={{
             padding: '10px 0 0 10px',
@@ -69,7 +69,7 @@ function WorkerDateRangePicker({
           />
         </div>
         <Grid container direction="row">
-          <Grid xs={6} className={classes.item}>
+          <Grid item xs={6} className={classes.item}>
             <PublishedComponent
               pubRef="core.DatePicker"
               module="workerVoucher"
@@ -83,7 +83,7 @@ function WorkerDateRangePicker({
               {...(endDate ? { maxDate: endDate } : null)}
             />
           </Grid>
-          <Grid xs={6} className={classes.item}>
+          <Grid item xs={6} className={classes.item}>
             <PublishedComponent
               pubRef="core.DatePicker"
               module="workerVoucher"
@@ -116,8 +116,8 @@ function WorkerDateRangePicker({
           )}
         </Grid>
       </Grid>
-      <Grid container xs={7} style={{ padding: '0 10px 0 0' }}>
-        <Grid xs={12} style={{ margin: '0 0 0 12px' }}>
+      <Grid item container xs={7} style={{ padding: '0 10px 0 0' }}>
+        <Grid item xs={12} style={{ margin: '0 0 0 12px' }}>
           <Typography variant="subtitle1" style={{ padding: '10px 0 0 0' }}>
             {formatMessage('workerVoucher.WorkerDateRangePicker.dateRanges')}
           </Typography>

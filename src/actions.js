@@ -22,6 +22,12 @@ const WORKER_VOUCHER_PROJECTION = (modulesManager) => [
   'dateCreated',
   'dateUpdated',
   'dateOfAssignment',
+  'startTime',
+  'endTime',
+  'workPlace',
+  'activity',
+  'negotiated',
+  'paid',
   `insuree ${modulesManager.getProjection('insuree.InsureePicker.projection')}`,
   `policyholder ${modulesManager.getProjection('policyHolder.PolicyHolderPicker.projection')}`,
 ];
@@ -66,11 +72,11 @@ export const GROUP_PROJECTION = (modulesManager, withWorkers = true) => [
     totalCount
     ${withWorkers
     ? `edges {
-      node {
-        isDeleted,
-        insuree ${modulesManager.getProjection('insuree.InsureePicker.projection')},
-      }
-    }`
+        node {
+          isDeleted,
+          insuree ${modulesManager.getProjection('insuree.InsureePicker.projection')},
+        }
+      }`
     : ''
   }
   }`,
@@ -207,14 +213,42 @@ export function voucherAssignmentValidation(phCode, workers, dateRanges) {
   );
 }
 
-export function assignVouchers(phCode, workers, dateRanges, clientMutationLabel) {
+function formatWorkersData(workersData) {
+  if (!workersData) return '[]';
+
+  const workersArray = Object.values(workersData).map((worker) => ({
+    chfId: worker.worker.chfId,
+    startTime: worker.startTime || '07:00',
+    endTime: worker.endTime || '17:00',
+    workPlace: worker.workPlace || '',
+    activity: worker.activity || '',
+    negotiated: worker.negotiated || 0,
+    paid: worker.paid || 0,
+  }));
+
+  const formattedWorkers = workersArray.map((worker) => `{
+      chfId: "${worker.chfId}",
+      startTime: "${worker.startTime}",
+      endTime: "${worker.endTime}",
+      workPlace: "${worker.workPlace}",
+      activity: "${worker.activity}",
+      negotiated: ${worker.negotiated},
+      paid: ${worker.paid}
+    }`).join(', ');
+
+  return `[${formattedWorkers}]`;
+}
+
+export function assignVouchers(phCode, workers, dateRanges, workersData, clientMutationLabel) {
   const formattedDateRanges = formatGraphQLDateRanges(dateRanges ?? []);
   const formattedWorkers = formatGraphQLStringArray(workers?.map((worker) => worker?.chfId) ?? []);
+  const formattedWorkersData = formatWorkersData(workersData ?? {});
 
   const mutationInput = `
   ${phCode ? `economicUnitCode: "${phCode}"` : ''}
   ${workers ? `workers: ${formattedWorkers}` : ''}
   ${dateRanges ? `dateRanges: ${formattedDateRanges}` : ''}
+  ${workersData ? `workersData: ${formattedWorkersData}` : ''}
   `;
   const mutation = formatMutation('assignVouchers', mutationInput, clientMutationLabel);
   const requestedDateTime = new Date();
@@ -842,6 +876,28 @@ export function cancelVoucher(workerVoucher, clientMutationLabel) {
     [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.CANCEL_VOUCHER), ERROR(ACTION_TYPE.MUTATION)],
     {
       actionType: ACTION_TYPE.CANCEL_VOUCHER,
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    },
+  );
+}
+
+export function updateWorkerVoucher(workerVoucher, clientMutationLabel) {
+  const mutationInput = `
+    ${workerVoucher.uuid ? `id: "${workerVoucher.uuid}"` : ''}
+    ${workerVoucher.endTime ? `endTime: "${workerVoucher.endTime}"` : ''}
+    ${workerVoucher.paid !== undefined ? `paid: ${workerVoucher.paid}` : ''}
+  `;
+
+  const mutation = formatMutation('updateWorkerVoucher', mutationInput, clientMutationLabel);
+  const requestedDateTime = new Date();
+
+  return graphql(
+    mutation.payload,
+    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.UPDATE_WORKER_VOUCHER), ERROR(ACTION_TYPE.MUTATION)],
+    {
+      actionType: ACTION_TYPE.UPDATE_WORKER_VOUCHER,
       clientMutationId: mutation.clientMutationId,
       clientMutationLabel,
       requestedDateTime,

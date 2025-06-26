@@ -114,9 +114,9 @@ function VoucherPriceManagementForm() {
   return (
     <>
       <Grid container>
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Grid container className={classes.paperHeaderTitle}>
                 <Typography variant="h5">{formatMessage('menu.priceManagement')}</Typography>
                 <Tooltip

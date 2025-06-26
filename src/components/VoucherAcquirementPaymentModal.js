@@ -58,7 +58,7 @@ function VoucherAcquirementPaymentModal({
 
     return (
       <Grid container>
-        <Grid xs={4} className={classes.item}>
+        <Grid item xs={4} className={classes.item}>
           <NumberInput
             module="workerVoucher"
             label="workerVoucher.vouchersQuantity"
@@ -66,7 +66,7 @@ function VoucherAcquirementPaymentModal({
             readOnly={readOnly}
           />
         </Grid>
-        <Grid xs={4} className={classes.item}>
+        <Grid item xs={4} className={classes.item}>
           <AmountInput
             module="workerVoucher"
             label="workerVoucher.pricePerVoucher"
@@ -75,7 +75,7 @@ function VoucherAcquirementPaymentModal({
             displayZero
           />
         </Grid>
-        <Grid xs={4} className={classes.item}>
+        <Grid item xs={4} className={classes.item}>
           <AmountInput
             module="workerVoucher"
             label="workerVoucher.toBePaid"

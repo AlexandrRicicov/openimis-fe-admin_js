@@ -8,6 +8,7 @@ import {
 import PrintIcon from '@material-ui/icons/Print';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import CancelIcon from '@material-ui/icons/Cancel';
+import SaveIcon from '@material-ui/icons/Save';
 import { makeStyles } from '@material-ui/styles';
 
 import {
@@ -37,9 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function VoucherDetailsPanel({
-  workerVoucher, readOnly = true, formatMessage, rights, logo, formatDateTimeFromISO,
-}) {
+function VoucherDetailsPanel(props) {
+  const { workerVoucher, edited, onEditedChanged, readOnly = true, formatMessage, rights, logo, formatDateTimeFromISO, canSaveVoucher, saveVoucher } = props;
+
   const modulesManager = useModulesManager();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -99,6 +100,16 @@ function VoucherDetailsPanel({
           </Grid>
           {rights.includes(VOUCHER_RIGHT_SEARCH) && (
             <Grid item className={classes.actionButtons}>
+              <Button
+                size="small"
+                variant="contained"
+                color="primary"
+                startIcon={<SaveIcon />}
+                onClick={saveVoucher}
+                disabled={!canSaveVoucher || !canSaveVoucher()}
+              >
+                <Typography variant="body2">{formatMessage('workerVoucher.saveVoucher')}</Typography>
+              </Button>
               {CANCELABLE.includes(workerVoucher.status) && (
                 <Button
                   size="small"
@@ -148,7 +159,8 @@ function VoucherDetailsPanel({
       <Divider />
       <VoucherDetailsVoucher
         workerVoucher={workerVoucher}
-        readOnly={readOnly}
+        edited={edited}
+        onEditedChanged={onEditedChanged}
         classes={classes}
         formatMessage={formatMessage}
         formatDateTimeFromISO={formatDateTimeFromISO}

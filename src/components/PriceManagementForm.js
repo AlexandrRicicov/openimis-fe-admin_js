@@ -10,7 +10,7 @@ function PriceManagementForm({
   return (
     <>
       <Grid container direction="row">
-        <Grid xs={3} className={classes.item}>
+        <Grid item xs={3} className={classes.item}>
           <AmountInput
             module="workerVoucher"
             label="workerVoucher.pricePerVoucher"
@@ -21,7 +21,7 @@ function PriceManagementForm({
             required
           />
         </Grid>
-        <Grid xs={3} className={classes.item}>
+        <Grid item xs={3} className={classes.item}>
           <PublishedComponent
             pubRef="core.DatePicker"
             module="workerVoucher"
@@ -36,7 +36,7 @@ function PriceManagementForm({
             {...(edited?.validTo ? { maxDate: edited.validTo } : null)}
           />
         </Grid>
-        <Grid xs={3} className={classes.item}>
+        <Grid item xs={3} className={classes.item}>
           <PublishedComponent
             pubRef="core.DatePicker"
             module="workerVoucher"

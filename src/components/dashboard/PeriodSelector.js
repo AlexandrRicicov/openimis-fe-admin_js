@@ -29,7 +29,7 @@ function PeriodSelector({
 
   return (
     <div className={classes.wrapper}>
-      <Grid xs={12} className={classes.item}>
+      <Grid item xs={12} className={classes.item}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module="workerVoucher"
@@ -43,7 +43,7 @@ function PeriodSelector({
           {...(endDate ? { maxDate: endDate } : null)}
         />
       </Grid>
-      <Grid xs={12} className={classes.item}>
+      <Grid item xs={12} className={classes.item}>
         <PublishedComponent
           pubRef="core.DatePicker"
           module="workerVoucher"

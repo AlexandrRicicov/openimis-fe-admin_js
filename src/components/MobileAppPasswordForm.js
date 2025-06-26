@@ -81,9 +81,9 @@ function MobileAppPasswordForm() {
 
   return (
     <Grid container>
-      <Grid xs={12}>
+      <Grid item xs={12}>
         <Paper className={classes.paper}>
-          <Grid xs={12}>
+          <Grid item xs={12}>
             <Grid container className={classes.paperHeaderTitle}>
               <Typography variant="h5">{formatMessage('menu.mobileAppPassword')}</Typography>
               <Tooltip
@@ -128,7 +128,7 @@ function MobileAppPasswordForm() {
             )}
             <Box padding="10px">
               <Grid container spacing={2}>
-                <Grid xs={3} item>
+                <Grid item xs={3} item>
                   <TextInput
                     module="profile"
                     required={userHasPassword}
@@ -140,7 +140,7 @@ function MobileAppPasswordForm() {
 
                   />
                 </Grid>
-                <Grid xs={3} item>
+                <Grid item xs={3} item>
                   <TextInput
                     module="profile"
                     required
@@ -156,7 +156,7 @@ function MobileAppPasswordForm() {
                     }
                   />
                 </Grid>
-                <Grid xs={3} item>
+                <Grid item xs={3} item>
                   <TextInput
                     module="profile"
                     required

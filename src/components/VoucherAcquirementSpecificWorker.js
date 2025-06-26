@@ -157,7 +157,7 @@ function VoucherAcquirementSpecificWorker() {
 
   return (
     <>
-      <Grid xs={12}>
+      <Grid item xs={12}>
         <Grid container className={classes.paperHeaderTitle}>
           <div className={classes.infoSection}>
             <InfoButton content={formatMessage('VoucherAcquirementSpecificWorker.form.moreInfo')} />
